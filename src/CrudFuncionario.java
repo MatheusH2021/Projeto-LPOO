@@ -1,15 +1,22 @@
 import java.util.ArrayList;
+import java.util.Date;
 
 import Exceptions.CPFValidacaoException;
 import Exceptions.ValidaCamposException;
+import Exceptions.ValidaTokenException;
 
 public class CrudFuncionario implements ICRUD{
 	
 	protected static ArrayList<Funcionario> funcionarios;
+	protected static ArrayList<String> LogsAcoes;
+	private Date Data;
 	
 	public CrudFuncionario() {
 		funcionarios = new ArrayList<Funcionario>();
+		LogsAcoes 	 = new ArrayList<String>();
+		Data = new Date();
 	}
+	
 	@Override
 	public String insertDados(ArrayList<Object> dados) {
 		Funcionario novoFuncionario = (Funcionario) dados.get(0);
@@ -25,6 +32,7 @@ public class CrudFuncionario implements ICRUD{
 		}
 		
 		funcionarios.add(novoFuncionario);
+		LogsAcoes.add("Novo Funcionario Inserido: Data->"+this.Data+" | Codigo do novo Funcionario->"+novoFuncionario.getCodFuncionario()+" | Gerente Responsavel->GR0001");
 		return "Funcionario Cadastrado com sucesso!";
 	}
 
@@ -35,14 +43,21 @@ public class CrudFuncionario implements ICRUD{
 	}
 
 	@Override
-	public String deleteDados(String codPesquisa) {
+	public String deleteDados(String codPesquisa, String Token) {
+		
+		try {
+			ExceptionsHandling.ValidaToken(Token);
+		}catch(ValidaTokenException e) {
+			return e.getMensagem()+" Não Foi possivel deletar o funcionario!";
+		}
 		for (Funcionario funcionario : funcionarios) {
 			if (funcionario.getCodFuncionario().equals(codPesquisa)) {
 				funcionarios.remove(funcionario);
+				LogsAcoes.add("Funcionario Deletado: Data->"+this.Data+" | Codigo do Funcionario Deletado->"+codPesquisa+" | Gerente Responsavel->GR0001");
 				return "Funcionario deletado com sucesso!";
 			}
 		}
-		return "Erro ao deletar funcionario";
+		return "Erro ao deletar Funcionario!";
 	}
 
 	@Override

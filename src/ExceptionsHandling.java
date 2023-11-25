@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 import Exceptions.CPFValidacaoException;
 import Exceptions.ValidaCamposException;
+import Exceptions.ValidaTokenException;
 
 public class ExceptionsHandling {
 	
@@ -30,6 +31,22 @@ public class ExceptionsHandling {
 			throw new ValidaCamposException("Quantidade de caracteres insulficiente, a quantidade minima a ser informada é *6*! Campo a ser preenchido->"+nomeCampo);
 		}
 	}
+	
+	public static void ValidaToken(String token) throws ValidaTokenException {
+		boolean notFound = true;
+		for (Funcionario funcionario : CrudFuncionario.funcionarios) {
+			if (funcionario instanceof Gerente) {
+				Gerente gerente = (Gerente) funcionario;
+				if (gerente.getTokenAcesso().equals(token)) {
+					notFound = false;
+				}
+			}
+		}
+		if (notFound) {
+			throw new ValidaTokenException();
+		}
+	}
+	
 	
 	private static boolean ExisteCPF(String CPF) {
 		for (Funcionario funcionario : CrudFuncionario.funcionarios) {

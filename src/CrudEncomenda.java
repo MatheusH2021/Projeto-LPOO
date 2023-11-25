@@ -17,7 +17,7 @@ public class CrudEncomenda implements ICRUD{
 	}
 
 	@Override
-	public String deleteDados(String codPesquisa) {
+	public String deleteDados(String codPesquisa, String Token) {
 		// TODO Auto-generated method stub
 		return null;
 	}

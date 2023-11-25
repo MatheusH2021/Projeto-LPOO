@@ -49,7 +49,7 @@ public class Teste {
 		System.out.println(crud.insertDados(ICRUD.arr));
 		ICRUD.arr.clear();
 		
-		Gerente fun2 = new Gerente("Pedro", "11111111111", endereco, "", "123321444");//
+		Gerente fun2 = new Gerente("Pedro", "11111111111", endereco, "10/10/2001", "123321444");//
 		ICRUD.arr.add(fun2);
 		System.out.println(crud.insertDados(ICRUD.arr));
 		ICRUD.arr.clear();
@@ -64,7 +64,7 @@ public class Teste {
 		System.out.println(crud.insertDados(ICRUD.arr));
 		ICRUD.arr.clear();
 		
-		Gerente fun5 = new Gerente("Paula", "33333333333", endereco, "", "123321444");
+		Gerente fun5 = new Gerente("Paula", "33333333333", endereco, "10/10/2001", "123321444");
 		ICRUD.arr.add(fun5);
 		System.out.println(crud.insertDados(ICRUD.arr));
 		ICRUD.arr.clear();
@@ -75,10 +75,18 @@ public class Teste {
 		ICRUD.arr.clear();
 		
 		System.out.println(crud.selectDados());
-		System.out.println(crud.selectFuncionario("FN0002"));
-		
-//		crud.deleteDados("FN0001");
+//		System.out.println(crud.selectFuncionario("FN0002"));
+		System.out.println(fun5.getTokenAcesso());
+//		Gerente gerente = (Gerente) CrudFuncionario.funcionarios.get(4);
+//		System.out.println(gerente.getNome());
+//		System.out.println(gerente.getTokenAcesso());
+		System.out.println(crud.deleteDados("FN0001", fun5.getTokenAcesso()));
+		System.out.println(crud.deleteDados("GR0001", ""));
+		System.out.println(crud.selectDados());
 //		System.out.println();
+		for (String logs : CrudFuncionario.LogsAcoes) {
+			System.out.println(logs);
+		}
 		
 		
 
