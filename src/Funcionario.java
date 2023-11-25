@@ -1,29 +1,45 @@
-import java.util.Date;
 
-public class Funcionario {
-	private String codFuncionario;
-	private String Nome;
-	private String CPF;
-	private String senha;
+public class Funcionario{
+	private String codFuncionario, Nome, CPF, senha;
 	private Endereco endereco;
-	private Date Data_nascimento;
-	
-	public Funcionario(String codFuncionario, String nome, String CPF, Endereco endereco, Date data_nascimento, String senha) {
-		super();
-		setCodFuncionario(codFuncionario);
-		setNome(nome);
-		setCPF(CPF);
-		setSenha(senha);
-		setEndereco(endereco);
-		setData_nascimento(data_nascimento);
+	private String Data_nascimento;
+
+	public Funcionario(String nome, String CPF, Endereco endereco, String data_nascimento, String senha) {
+		this.gerarCodFuncionario();
+		this.setNome(nome);
+		this.setCPF(CPF);
+		this.setSenha(senha);
+		this.setEndereco(endereco);
+		this.setData_nascimento(data_nascimento);
+	}
+		
+	private void gerarCodFuncionario() {
+		if (CrudFuncionario.funcionarios.isEmpty()) {
+			String codFuncionario = "FN0001";
+			this.setCodFuncionario(codFuncionario);
+		} else {
+			int codigo = 0;
+			String novoCodigo;
+			for (Funcionario funcionario2 : CrudFuncionario.funcionarios) {
+				Funcionario ultimo = funcionario2;
+				if (ultimo instanceof Gerente == false && ultimo instanceof Entregador == false) {
+					codigo += 1;
+				}
+			}
+			if (codigo == 0) {
+				novoCodigo = "FN000"+String.valueOf(codigo + 1);				
+			} else {
+				novoCodigo = "FN000"+String.valueOf(codigo + 1);
+			}
+			this.setCodFuncionario(novoCodigo);
+		}
 	}
 	
-
 	public String getCodFuncionario() {
 		return codFuncionario;
 	}
 	
-	public void setCodFuncionario(String codFuncionario) {
+	protected void setCodFuncionario(String codFuncionario) {
 		this.codFuncionario = codFuncionario;
 	}
 	
@@ -59,12 +75,19 @@ public class Funcionario {
 		this.endereco = endereco;
 	}
 	
-	public Date getData_nascimento() {
+	public String getData_nascimento() {
 		return Data_nascimento;
 	}
 	
-	public void setData_nascimento(Date data_nascimento) {
+	public void setData_nascimento(String data_nascimento) {
 		Data_nascimento = data_nascimento;
+	}
+	
+	/** To String **/
+	@Override
+	public String toString() {
+		return "Funcionario [codFuncionario=" + codFuncionario + ", Nome=" + Nome + ", CPF=" + CPF + ", senha=" + senha
+				+ ", endereco=" + endereco + ", Data_nascimento=" + Data_nascimento + "]";
 	}
 	
 }

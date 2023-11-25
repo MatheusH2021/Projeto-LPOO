@@ -1,49 +1,41 @@
 import java.sql.Date;
 
 public class Entregas {
-	private String codEntrega;
+	private String codEntrega, codEntregador, Status;
 	private Encomenda encomenda;
-	private Cliente Remetente;
-	private Cliente Destinatario;
 	private Date Data_entrega;
-	private String Status;
 	
-	public Entregas(String codEntrega, Encomenda encomenda, Cliente remetente, Cliente destinatario, Date data_entrega,
-			String status) {
-		
-		this.codEntrega = codEntrega;
-		this.encomenda = encomenda;
-		Remetente = remetente;
-		Destinatario = destinatario;
-		Data_entrega = data_entrega;
-		Status = "Postado";
+	public Entregas(String codEntrega, String codEntregador, Encomenda encomenda, Date data_entrega, String status) {		
+		this.setCodEntrega(codEntrega);
+		this.setEncomenda(encomenda);
+		this.setData_entrega(data_entrega);
 		
 	}
 	
 	public String getCodEntrega() {
 		return codEntrega;
 	}
+
+	public String getCodEntregador() {
+		return codEntregador;
+	}
+
+	public void setCodEntregador(String codEntregador) {
+		this.codEntregador = codEntregador;
+	}
+
 	public void setCodEntrega(String codEntrega) {
 		this.codEntrega = codEntrega;
 	}
+	
 	public Encomenda getEncomenda() {
 		return encomenda;
 	}
+	
 	public void setEncomenda(Encomenda encomenda) {
 		this.encomenda = encomenda;
 	}
-	public Cliente getRemetente() {
-		return Remetente;
-	}
-	public void setRemetente(Cliente remetente) {
-		Remetente = remetente;
-	}
-	public Cliente getDestinatario() {
-		return Destinatario;
-	}
-	public void setDestinatario(Cliente destinatario) {
-		Destinatario = destinatario;
-	}
+	
 	public Date getData_entrega() {
 		return Data_entrega;
 	}
