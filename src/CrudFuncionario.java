@@ -9,6 +9,7 @@ public class CrudFuncionario implements ICRUD{
 	
 	protected static ArrayList<Funcionario> funcionarios;
 	protected static ArrayList<String> LogsAcoes;
+	protected static boolean actionSuccess;
 	private Date Data;
 	
 	public CrudFuncionario() {
@@ -26,13 +27,17 @@ public class CrudFuncionario implements ICRUD{
 			ExceptionsHandling.CampoVazio(novoFuncionario.getSenha(), "Senha");
 			ExceptionsHandling.CampoVazio(novoFuncionario.getData_nascimento(), "Data de Nascimento");
 		}catch(CPFValidacaoException e) {
+			this.actionSuccess = false;
 			return e.getMessage();
 		} catch(ValidaCamposException e) {
+			this.actionSuccess = false;
 			return e.getMessage();
 		}
 		
 		funcionarios.add(novoFuncionario);
 		LogsAcoes.add("Novo Funcionario Inserido: Data->"+this.Data+" | Codigo do novo Funcionario->"+novoFuncionario.getCodFuncionario()+" | Gerente Responsavel->GR0001");
+		/*- Define o sucesso da ação realizada */
+		this.actionSuccess = true;
 		return "Funcionario Cadastrado com sucesso!";
 	}
 
