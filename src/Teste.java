@@ -38,11 +38,12 @@ public class Teste {
 	}
 	
 	public static void main(String[] args) {
-		
+		final String ANSI_RESET = "\u001B[0m";
+		final String ANSI_RED = "\u001B[31m";
 		/*- Teste CRUD de funcionario -*/
 		ICRUD crud = new CrudFuncionario();
 		ICRUD crudEnc = new CrudEncomenda();
-		Endereco endereco = new Endereco("rua", 1, "bairro", "cidade", "estado", "cEP");
+		Endereco endereco = new Endereco("rua", 1, "bairro", "cidade", "PE", "55294-200");
 		
 		Funcionario fun1 = new Funcionario("Matheus", "11133344455", endereco, "10/10/2001", "123321444");//
 		ICRUD.arr.add(fun1);
@@ -81,7 +82,6 @@ public class Teste {
 //		System.out.println(gerente.getNome());
 //		System.out.println(gerente.getTokenAcesso());
 		System.out.println(crud.deleteDados("FN0001", fun5.getTokenAcesso()));
-		System.out.println(crud.deleteDados("GR0001", ""));
 		System.out.println(crud.selectDados());
 //		System.out.println();
 		for (String logs : CrudFuncionario.LogsAcoes) {

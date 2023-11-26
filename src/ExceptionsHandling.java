@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import Exceptions.CPFValidacaoException;
+import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
 import Exceptions.ValidaTokenException;
 
@@ -47,6 +48,21 @@ public class ExceptionsHandling {
 		}
 	}
 	
+	public static void ValidaEndereco(Endereco endereco) throws EnderecoValidacaoException{
+		if (endereco.getBairro().equals("") || endereco.getBairro().isEmpty()) {
+			throw new EnderecoValidacaoException("Informe o *Bairro* do seu enderecço!");
+		} else if(endereco.getCidade().equals("") || endereco.getCidade().isEmpty()) {
+			throw new EnderecoValidacaoException("Informe a *Cidade* do seu enderecço!");
+		} else if (endereco.getEstado().equals("") || endereco.getCidade().isEmpty() || endereco.getEstado().length() > 2) {
+			throw new EnderecoValidacaoException("Informe a *Estado* do seu enderecço, EX: SP, RJ, PE!");
+		} else if(endereco.getCEP().equals("") || endereco.getCEP().isEmpty() || !endereco.getCEP().matches("[0-9]{5}-[0-9]{3}")) {
+			throw new EnderecoValidacaoException("Informe a *CEP* do seu enderecço, No formato: XXXXX-XXX");
+		} else if(endereco.getNumero() < 0) {
+			throw new EnderecoValidacaoException("Informe a *Numero* do seu enderecço, Insira um numero válido!");
+		} else if(endereco.getRua().isEmpty() || endereco.getRua().equals("")) {
+			throw new EnderecoValidacaoException("Informe a *Rua* do seu enderecço!");
+		}
+	}
 	
 	private static boolean ExisteCPF(String CPF) {
 		for (Funcionario funcionario : CrudFuncionario.funcionarios) {

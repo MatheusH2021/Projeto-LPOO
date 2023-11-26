@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Exceptions.CPFValidacaoException;
+import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
 import Exceptions.ValidaTokenException;
 
@@ -25,19 +26,26 @@ public class CrudFuncionario implements ICRUD{
 			ExceptionsHandling.CpfValidacao(novoFuncionario.getCPF());
 			ExceptionsHandling.CampoVazio(novoFuncionario.getNome(), "Nome");
 			ExceptionsHandling.CampoVazio(novoFuncionario.getSenha(), "Senha");
+			ExceptionsHandling.ValidaEndereco(novoFuncionario.getEndereco());
 			ExceptionsHandling.CampoVazio(novoFuncionario.getData_nascimento(), "Data de Nascimento");
 		}catch(CPFValidacaoException e) {
 			this.actionSuccess = false;
-			return e.getMessage();
+			return "Erro: "+e.getMessage();
 		} catch(ValidaCamposException e) {
 			this.actionSuccess = false;
-			return e.getMessage();
+			return "Erro: "+e.getMessage();
+		} catch (EnderecoValidacaoException e) {
+			this.actionSuccess = false;
+			return "Erro: "+e.getMessage();
 		}
 		
 		funcionarios.add(novoFuncionario);
 		LogsAcoes.add("Novo Funcionario Inserido: Data->"+this.Data+" | Codigo do novo Funcionario->"+novoFuncionario.getCodFuncionario()+" | Gerente Responsavel->GR0001");
+		
 		/*- Define o sucesso da ação realizada */
 		this.actionSuccess = true;
+		/*-------------------------------------*/
+		
 		return "Funcionario Cadastrado com sucesso!";
 	}
 

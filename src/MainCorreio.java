@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MainCorreio {
@@ -25,27 +26,66 @@ public class MainCorreio {
 				boolean cont = true;
 				System.out.println("Inicialização do sistema...");
 				while(cont) {
-					Endereco end = new Endereco("rua", 1, "bairro", "cidade", "estado", "cep");
-					System.out.println("Para utilizar o sistema realize o cadastro do acesso para o gerente->");
-					System.out.println("Após o cadastro, você poderá realizar o login com seu acesso de gerente e começar as atividades.");
-					System.out.print("Informe seu nome: ");
-					String nome = keyboard.nextLine();
-					System.out.print("Informe seu CPF: ");
-					String CPF = keyboard.nextLine();
-					System.out.println("Informe sua data de nascimento: ");
-					String data_nascimento = keyboard.nextLine();
-					System.out.println("Informe sua senha: ");
-					String senhaCad = keyboard.nextLine();
-					Gerente grFirst = new Gerente(nome, CPF, end, data_nascimento, senhaCad);
-					ICRUD.arr.add(grFirst);
-					System.out.println(crud.insertDados(ICRUD.arr));
-					if (CrudFuncionario.actionSuccess) {
-						cont = false;
-						System.out.println("O seu acesso foi criado, para realizar o login utilize seu codigo->"+grFirst.getCodFuncionario()+", jutnamente com sua senha!");
+					try {
+						System.out.println("Para utilizar o sistema realize o cadastro do acesso para o gerente->");
+						System.out.println("Após o cadastro, você poderá realizar o login com seu acesso de gerente e começar as atividades.");
 						System.out.println();
+						System.out.println("Etapa 1: Cadastro de informações base->");
+						System.out.println();
+						System.out.print("Informe seu nome: ");
+						String nome = keyboard.nextLine();
+						nome = keyboard.nextLine();
+						System.out.print("Informe seu CPF (Obs: Apenas numeros!): ");
+						String CPF = keyboard.nextLine();
+						System.out.print("Informe sua data de nascimento: ");
+						String data_nascimento = keyboard.nextLine();
+						System.out.print("Informe sua senha (Obs: no minimo 6 digitos): ");
+						String senhaCad = keyboard.nextLine();
+						System.out.println();
+						System.out.println("Etapa 2: Cadastro de endereço->");
+						System.out.println();
+						System.out.print("Informe sua rua: ");
+						String rua = keyboard.nextLine();
+						System.out.print("Informe o Numero (Obs: Apenas Numeros!): ");
+						int numero = keyboard.nextInt();
+						System.out.print("Informe seu Bairro: ");
+						String bairro = keyboard.nextLine();
+						bairro = keyboard.nextLine();
+						System.out.print("Informe sua cidade: ");
+						String cidade = keyboard.nextLine();
+						System.out.print("Informe seu estado (Obs: apenas as iniciais, EX: SP, PE, RJ): ");
+						String estado = keyboard.nextLine().toUpperCase();
+						System.out.print("Informe seu CEP (EX:XXXXX-XXX): ");
+						String cep = keyboard.nextLine();
+						System.out.println();
+						
+						Endereco end = new Endereco(rua, numero, bairro, cidade, estado, cep);
+						Gerente grFirst = new Gerente(nome, CPF, end, data_nascimento, senhaCad);
+						ICRUD.arr.add(grFirst);
+						
+						System.out.println(crud.insertDados(ICRUD.arr));
+						
+						System.out.println();
+						
+						if (CrudFuncionario.actionSuccess) {
+							cont = false;
+							System.out.println("O seu acesso foi criado, para realizar o login utilize seu codigo->"+grFirst.getCodFuncionario()+", jutnamente com sua senha!");
+							System.out.println();
+						}
+						ICRUD.arr.clear();
+						
+					} catch(NullPointerException e) {
+						System.out.println(e.getMessage());
+					} catch(IllegalArgumentException e) {
+						System.out.println(e.getMessage());
+					} catch (InputMismatchException e) {
+						System.out.println("Caracter Inválido");
 					}
-					ICRUD.arr.clear();					
-				}
+					
+					System.out.println(crud.selectDados());
+				} 
+			} else {
+				System.out.println("Login normal!");;
 				
 			}
 		}
