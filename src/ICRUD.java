@@ -1,12 +1,10 @@
-import java.util.ArrayList;
 
-public interface ICRUD {
-	
-	static ArrayList<Object> arr = new ArrayList<Object>();
-	
+public interface ICRUD<E>{
+
 	/** Funções basicas para os CRUDS **/
-	String insertDados(ArrayList<Object> dados);
-	String updateDados(ArrayList<Object> novosDados);
+	
+	String insertDados(E dados);
+	String updateDados(E novosDados);
 	String deleteDados(String codPesquisa, String Token);
 	Object selectFuncionario(String codPesquisa);
 	String selectDados();

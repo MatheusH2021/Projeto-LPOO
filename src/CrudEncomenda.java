@@ -1,17 +1,17 @@
 import java.util.ArrayList;
 
-public class CrudEncomenda implements ICRUD{
+public class CrudEncomenda implements ICRUD<Encomenda>{
 	
 	protected static ArrayList<Encomenda> encomendas = new ArrayList<Encomenda>();
 	
 	@Override
-	public String insertDados(ArrayList<Object> dados) {
+	public String insertDados(Encomenda dados) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String updateDados(ArrayList<Object> novosDados) {
+	public String updateDados(Encomenda novosDados) {
 		// TODO Auto-generated method stub
 		return null;
 	}

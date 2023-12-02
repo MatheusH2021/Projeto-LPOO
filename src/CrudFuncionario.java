@@ -6,7 +6,7 @@ import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
 import Exceptions.ValidaTokenException;
 
-public class CrudFuncionario implements ICRUD{
+public class CrudFuncionario implements ICRUD<Funcionario>{
 	
 	protected static ArrayList<Funcionario> funcionarios;
 	protected static ArrayList<String> LogsAcoes;
@@ -20,8 +20,8 @@ public class CrudFuncionario implements ICRUD{
 	}
 	
 	@Override
-	public String insertDados(ArrayList<Object> dados) {
-		Funcionario novoFuncionario = (Funcionario) dados.get(0);
+	public String insertDados(Funcionario dados) {
+		Funcionario novoFuncionario = dados;
 		try {
 			ExceptionsHandling.CpfValidacao(novoFuncionario.getCPF());
 			ExceptionsHandling.CampoVazio(novoFuncionario.getNome(), "Nome");
@@ -29,13 +29,13 @@ public class CrudFuncionario implements ICRUD{
 			ExceptionsHandling.ValidaEndereco(novoFuncionario.getEndereco());
 			ExceptionsHandling.CampoVazio(novoFuncionario.getData_nascimento(), "Data de Nascimento");
 		}catch(CPFValidacaoException e) {
-			this.actionSuccess = false;
+			CrudFuncionario.actionSuccess = false;
 			return "Erro: "+e.getMessage();
 		} catch(ValidaCamposException e) {
-			this.actionSuccess = false;
+			CrudFuncionario.actionSuccess = false;
 			return "Erro: "+e.getMessage();
 		} catch (EnderecoValidacaoException e) {
-			this.actionSuccess = false;
+			CrudFuncionario.actionSuccess = false;
 			return "Erro: "+e.getMessage();
 		}
 		
@@ -43,15 +43,15 @@ public class CrudFuncionario implements ICRUD{
 		LogsAcoes.add("Novo Funcionario Inserido: Data->"+this.Data+" | Codigo do novo Funcionario->"+novoFuncionario.getCodFuncionario()+" | Gerente Responsavel->GR0001");
 		
 		/*- Define o sucesso da ação realizada */
-		this.actionSuccess = true;
+		CrudFuncionario.actionSuccess = true;
 		/*-------------------------------------*/
 		
 		return "Funcionario Cadastrado com sucesso!";
 	}
 
 	@Override
-	public String updateDados(ArrayList<Object> novosDados) {
-		// TODO Auto-generated method stub
+	public String updateDados(Funcionario novosDados) {
+		
 		return null;
 	}
 
@@ -96,7 +96,19 @@ public class CrudFuncionario implements ICRUD{
 		}
 		
 	}
-
+	public Funcionario realizaLogin(String codFunc, String senha) {
+		try {
+			ExceptionsHandling.CampoVazio(codFunc, "Codigo de Funcionario");
+			ExceptionsHandling.CampoVazio(senha, "Senha");
+		}catch(ValidaCamposException e) {
+			return null;
+		}
+		Funcionario logado = selectFuncionario(codFunc);
+		if (logado != null && logado.getSenha().equals(senha)) {
+			return logado;
+		}
+		return null;
+	}
 	@Override
 	public Funcionario selectFuncionario(String codFun) {
 		if (funcionarios.isEmpty()) {

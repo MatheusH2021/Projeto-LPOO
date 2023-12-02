@@ -41,39 +41,37 @@ public class Teste {
 		final String ANSI_RESET = "\u001B[0m";
 		final String ANSI_RED = "\u001B[31m";
 		/*- Teste CRUD de funcionario -*/
-		ICRUD crud = new CrudFuncionario();
-		ICRUD crudEnc = new CrudEncomenda();
+		ICRUD<Funcionario> crud = new CrudFuncionario();
+		ICRUD<Encomenda> crudEnc = new CrudEncomenda();
 		Endereco endereco = new Endereco("rua", 1, "bairro", "cidade", "PE", "55294-200");
 		
 		Funcionario fun1 = new Funcionario("Matheus", "11133344455", endereco, "10/10/2001", "123321444");//
-		ICRUD.arr.add(fun1);
-		System.out.println(crud.insertDados(ICRUD.arr));
-		ICRUD.arr.clear();
+		
+		System.out.println(crud.insertDados(fun1));
+		
 		
 		Gerente fun2 = new Gerente("Pedro", "11111111111", endereco, "10/10/2001", "123321444");//
-		ICRUD.arr.add(fun2);
-		System.out.println(crud.insertDados(ICRUD.arr));
-		ICRUD.arr.clear();
+		System.out.println(crud.insertDados(fun2));
+		
 		
 		Entregador fun3 = new Entregador("João", "123.321.456-12", endereco, "10/10/2001", "1234567");//
-		ICRUD.arr.add(fun3);
-		System.out.println(crud.insertDados(ICRUD.arr));
-		ICRUD.arr.clear();
+		
+		System.out.println(crud.insertDados(fun3));
+		
 		
 		Funcionario fun4 = new Funcionario("Ana", "22222222222", endereco, "10/10/2001", "123456");//
-		ICRUD.arr.add(fun4);
-		System.out.println(crud.insertDados(ICRUD.arr));
-		ICRUD.arr.clear();
+		
+		System.out.println(crud.insertDados(fun4));
+		
 		
 		Gerente fun5 = new Gerente("Paula", "33333333333", endereco, "10/10/2001", "123321444");
-		ICRUD.arr.add(fun5);
-		System.out.println(crud.insertDados(ICRUD.arr));
-		ICRUD.arr.clear();
+		
+		System.out.println(crud.insertDados(fun5));
+		
 		
 		Entregador fun6 = new Entregador("Tirano", "11111111111", endereco, "10/10/2001", "123321444");
-		ICRUD.arr.add(fun6);		
-		System.out.println(crud.insertDados(ICRUD.arr));
-		ICRUD.arr.clear();
+				
+		System.out.println(crud.insertDados(fun6));
 		
 		System.out.println(crud.selectDados());
 //		System.out.println(crud.selectFuncionario("FN0002"));
