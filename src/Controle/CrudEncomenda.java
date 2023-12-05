@@ -37,4 +37,10 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 		return null;
 	}
 
+	@Override
+	public String LogsAcoes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

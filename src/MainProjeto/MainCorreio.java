@@ -111,8 +111,8 @@ public class MainCorreio {
 						Gerente atualLogado = (Gerente) userLogin;
 						userLogin = null;
 						cont = true;
-						boolean cont_form = true;
 						while(cont) {							
+							boolean cont_form = true;
 							System.out.println("|*---------------------------------------------------------------*|");
 							System.out.println("|*- Bem Vindo Gerente "+atualLogado.getNome()+"                                   -*|");
 							System.out.println("|*- No Modulo de Gerente, você possui as seguintes funções      -*|");
@@ -220,6 +220,7 @@ public class MainCorreio {
 										System.out.println("|*- Realiando Logout...!");
 										atualLogado = null;
 										Thread.sleep(1000);
+										break;
 								}
 							}catch(IllegalArgumentException e) {
 								System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
@@ -233,15 +234,50 @@ public class MainCorreio {
 					} else if (userLogin instanceof Entregador) {
 						Entregador atualLogado = (Entregador) userLogin;
 						userLogin = null;
+						cont = true;
+						boolean cont_form = true;
 						
-						System.out.println("|*---------------------------------------------------------------*|");
-						System.out.println("|*- Bem Vindo Entregador "+atualLogado.getNome()+"                             -*|");
-						System.out.println("|*- No Modulo de Entregador, você possui as seguintes funções   -*|");
-						System.out.println("|*---------------------------------------------------------------*|");
-						System.out.println("|*- Gerenciamento de Entregas (Atualizar Status, Concluir)      -*|");
-						System.out.println("|*- Visualizar lista de entregas                                -*|");
-						System.out.println("|*---------------------------------------------------------------*|");
-
+						while(cont) {
+							System.out.println("|*---------------------------------------------------------------*|");
+							System.out.println("|*- Bem Vindo Entregador "+atualLogado.getNome()+"                             -*|");
+							System.out.println("|*- No Modulo de Entregador, você possui as seguintes funções   -*|");
+							System.out.println("|*---------------------------------------------------------------*|");
+							System.out.println("|*- Gerenciamento de Entregas (Atualizar Status, Concluir)      -*|");
+							System.out.println("|*- Visualizar lista de entregas                                -*|");
+							System.out.println("|*---------------------------------------------------------------*|");
+							System.out.println("|*--------------------- Escolha uma opção ------------------------|");
+							System.out.println("|*- [1]- Gerenciar suas entregas      ->                         -|");
+							System.out.println("|*- [2]- Visualizar lista de entregas ->                         -|");
+							System.out.println("|*- [3]- Encerrar Sessão              ->                         -|");
+							System.out.println("|*----------------------------------------------------------------|");
+							System.out.print("|*- Sua Escolha: ");				
+							try {
+								switch(keyboard.nextInt()) {
+									case 1:
+										System.out.println("Gerenciando entregas");
+										break;
+									case 2:
+										System.out.println(atualLogado.visualizarEntregas());
+										Thread.sleep(2000);
+										break;
+									case 3:
+										cont = false;
+										System.out.println("|*- Realiando Logout...!");
+										atualLogado = null;
+										Thread.sleep(1000);
+										break;
+								}
+							}catch(NullPointerException e) {
+								System.out.println(e.getMessage());
+							} catch(IllegalArgumentException e) {
+								System.out.println(e.getMessage());
+							} catch (InputMismatchException e) {
+								System.out.println("Caracter Inválido");
+							} catch (Exception e) {
+								System.out.println("Erro ao Cadastrar: Tente Novamente!");
+							}
+						}
+						
 					} else {
 						Funcionario atualLogado = userLogin;
 						userLogin = null;

@@ -12,13 +12,13 @@ public class Entregador extends Funcionario{
 		entregas = new ArrayList<Entregas>();
 	}
 	
-	public ArrayList<Entregas> visualizarEntregas() {
+	public String visualizarEntregas() {
 		if (temEntrega()) {
-			ArrayList<Entregas> visuEntregas = new ArrayList<Entregas>();
-			visuEntregas = this.getEntregas();
+			String visuEntregas = "";
 			return visuEntregas;
+		} else {
+			return "|*- Sem entregas para visualizar ";
 		}
-		return null;	
 	}
 	
 	public String gerenciarEntrega(String novoStatus, String codEntrega) {
