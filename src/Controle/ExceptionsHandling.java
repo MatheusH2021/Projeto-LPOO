@@ -34,6 +34,17 @@ public class ExceptionsHandling {
 			throw new ValidaCamposException("Informe a informação pedida no campo para poder realizar o cadastro! Campo a ser preenchido->"+nomeCampo);
 		} else if (campo.length() < 6 && nomeCampo.equals("Senha")) {
 			throw new ValidaCamposException("Quantidade de caracteres insulficiente, a quantidade minima a ser informada é *6*! Campo a ser preenchido->"+nomeCampo);
+		} else if (nomeCampo == "Data de Nascimento") {
+			int dia = Integer.parseInt(campo.substring(0, 2));
+			int mes = Integer.parseInt(campo.substring(3, 5));
+			int ano = Integer.parseInt(campo.substring(6));
+			if (dia > 31 || dia < 1) {
+				throw new ValidaCamposException("Data informada inválida, informe seguindo o exemplo: dd/mm/AAAA (com as barras)");				
+			} else if (mes < 1 || mes > 12){
+				throw new ValidaCamposException("Data informada inválida, informe seguindo o exemplo: dd/mm/AAAA (com as barras)");
+			} else if (ano < 1900 || ano > 2023) {
+				throw new ValidaCamposException("Data informada inválida, informe seguindo o exemplo: dd/mm/AAAA (com as barras)");
+			}
 		}
 	}
 	

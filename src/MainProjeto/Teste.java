@@ -54,7 +54,14 @@ public class Teste {
 		ICRUD<Funcionario> crud = new CrudFuncionario();
 		ICRUD<Encomenda> crudEnc = new CrudEncomenda();
 		Endereco endereco = new Endereco("rua", 1, "bairro", "cidade", "PE", "55294-200");
+		String campo = "10/10/2001";
+		int dia = Integer.parseInt(campo.substring(0, 2));
+		int mes = Integer.parseInt(campo.substring(3, 5));
+		int ano = Integer.parseInt(campo.substring(6));
 		
+		System.out.println(dia);
+		System.out.println(mes);
+		System.out.println(ano);
 		Funcionario fun1 = new Funcionario("Matheus", "11133344455", endereco, "10/10/2001", "123321444");//
 		
 		System.out.println(crud.insertDados(fun1));

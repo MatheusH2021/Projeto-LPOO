@@ -111,7 +111,7 @@ public class MainCorreio {
 						Gerente atualLogado = (Gerente) userLogin;
 						userLogin = null;
 						cont = true;
-						
+						boolean cont_form = true;
 						while(cont) {							
 							System.out.println("|*---------------------------------------------------------------*|");
 							System.out.println("|*- Bem Vindo Gerente "+atualLogado.getNome()+"                                   -*|");
@@ -124,36 +124,106 @@ public class MainCorreio {
 							System.out.println("|*--------------------- Escolha uma opção ------------------------|");
 							System.out.println("|*- [1]- Cadastrar Funcionario     ->                            -|");
 							System.out.println("|*- [2]- Relatório de entregas     ->                            -|");
-							System.out.println("|*- [3]- Consultar Token de Acesso ->                            -|");
-							System.out.println("|*- [4]- Logs de Ações do Sistema  ->                            -|");
-							System.out.println("|*- [4]- Encerrar Sessão           ->                            -|");
+							System.out.println("|*- [3]- Consultar Funcionarios    ->                            -|");
+							System.out.println("|*- [4]- Consultar Token de Acesso ->                            -|");
+							System.out.println("|*- [5]- Logs de Ações do Sistema  ->                            -|");
+							System.out.println("|*- [6]- Encerrar Sessão           ->                            -|");
 							System.out.println("|*----------------------------------------------------------------|");
 							System.out.print("|*- Sua Escolha: ");									
 						
 							try{
 								switch(keyboard.nextInt()) {
 									case 1:
-										System.out.println("Cadastro de Funcionario!");
+										Entregador ent;
+										Funcionario func;
+										while(cont_form) {
+											System.out.println("|*--------------------- Cadastro de Funcionario ------------------------|");
+											try {
+												keyboard.nextLine();
+												System.out.println("|*-               Primeira etapa: Informações Basicas                  -|");
+												System.out.print("|*- Informe o nome do funcionario: ");
+												String nome = keyboard.nextLine();
+												System.out.print("|*- Informe o CPF do funcionario: ");
+												String CPF = keyboard.nextLine();
+												System.out.print("|*- Informe a senha de acesso do funcionario: ");
+												String senhaCad = keyboard.nextLine();
+												System.out.print("|*- Informe a data de nasciment do funcionario: ");
+												String data_nascimento = keyboard.nextLine();
+												System.out.println("|*-              Segunda etapa: Enderecço                              -|");
+												System.out.print("|*- Informe a rua do Funcionario: ");
+												String rua = keyboard.nextLine();
+												System.out.print("|*- Informe o numero da casa do Funcionario (Obs: Apenas Numeros!): ");
+												int numero = keyboard.nextInt();
+												System.out.print("|*- Informe o Bairro do Funcionario: ");
+												String bairro = keyboard.nextLine();
+												bairro = keyboard.nextLine();
+												System.out.print("|*- Informe a cidade do Funcionario: ");
+												String cidade = keyboard.nextLine();
+												System.out.print("|*- Informe o estado do Funcionario (Obs: apenas a sigla do estado, EX: SP, PE, RJ): ");
+												String estado = keyboard.nextLine().toUpperCase();
+												System.out.print("|*- Informe o CEP do Funcionario (EX:XXXXX-XXX): ");
+												String cep = keyboard.nextLine();
+												Endereco end = new Endereco(rua, numero, bairro, cidade, estado, cep);
+												
+												System.out.println("|*- Qual será o cargo do novo Funcionario: \n[1]- Entregador \n[2]- Funcionario");
+												if (keyboard.nextInt() == 1) {
+													ent = new Entregador(nome, CPF, end, data_nascimento, senhaCad);
+													System.out.println(crud.insertDados(ent));													
+												} else if (keyboard.nextInt() == 2) {
+													func = new Funcionario(nome, CPF, end, data_nascimento, senhaCad);
+													System.out.println(crud.insertDados(func));																									
+												} else {
+													System.out.println("|*- Opção inválida");
+													break;	
+												}
+												
+												if (CrudFuncionario.actionSuccess) {
+													cont_form = false;	
+													System.out.println();
+												} else {
+													System.out.println("Pressione ENTER para retornar ao cadastro...");
+													System.out.println();
+												}
+											}catch(NullPointerException e) {
+												System.out.println(e.getMessage());
+											} catch(IllegalArgumentException e) {
+												System.out.println(e.getMessage());
+											} catch (InputMismatchException e) {
+												System.out.println("Caracter Inválido");
+											} catch (Exception e) {
+												System.out.println("Erro ao Cadastrar: Tente Novamente!");
+											}
+										}
 										break;
 									case 2:
 										System.out.println("Relatório de Entregas!");
 										break;
 									case 3:
-										System.out.println("Consultar Token de Cadastro!");
+										System.out.println();
+										System.out.println("|*- Funcionarios Cadastrados no sistema->");
+										System.out.println(crud.selectDados());
+										System.out.println();
+										Thread.sleep(5000);
 										break;
 									case 4:
-										System.out.println("Logs de Ações!");
+										System.out.println("|*- Token de Acesso");
+										System.out.println("|*- O token serve para realizar atividades criticas, como deletar um funcionario.");
+										System.out.println("|*- Seu Token: "+atualLogado.getTokenAcesso());
+										Thread.sleep(2000);
 										break;
 									case 5:
+										System.out.println("Logs de Ações!");
+										break;
+									case 6:
 										cont = false;
 										System.out.println("|*- Realiando Logout...!");
 										Thread.sleep(1000);
 								}
 							}catch(IllegalArgumentException e) {
-								System.out.println("Caracter Inválido, digite apenas números");
+								System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
 								break;
 							} catch (InputMismatchException e) {
-								System.out.println("Caracter Inválido, digite apenas números");
+								System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
 								break;
 							}
 						}
@@ -164,7 +234,7 @@ public class MainCorreio {
 						
 						System.out.println("|*---------------------------------------------------------------*|");
 						System.out.println("|*- Bem Vindo Entregador "+atualLogado.getNome()+"                             -*|");
-						System.out.println("|*- No Modulo de Entrefador, você possui as seguintes funções   -*|");
+						System.out.println("|*- No Modulo de Entregador, você possui as seguintes funções   -*|");
 						System.out.println("|*---------------------------------------------------------------*|");
 						System.out.println("|*- Gerenciamento de Entregas (Atualizar Status, Concluir)      -*|");
 						System.out.println("|*- Visualizar lista de entregas                                -*|");
