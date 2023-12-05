@@ -82,19 +82,19 @@ public class CrudFuncionario implements ICRUD<Funcionario>{
 		if (funcionarios.isEmpty()) {
 			return "Sem Funcionarios Cadastrados";
 		} else {
-			String retorno = "------------------------------------------------------------------------------------------------------\n";
-			retorno += "Codigo Funcionario | Nome 		| CPF 		| Cargo 		| Data De nascimento |";
-			retorno += "\n------------------------------------------------------------------------------------------------------";
+			String retorno = "-------------------------------------------------------------------------------------------------------------------------------\n";
+			retorno += "Codigo Funcionario | Nome 		| CPF 		| Cargo 		| Data De nascimento | Senha do Funcionario   |";
+			retorno += "\n-------------------------------------------------------------------------------------------------------------------------------";
 			for (Funcionario funcionario : funcionarios) {
 				if (funcionario instanceof Entregador) {
-					retorno += "\n "+funcionario.getCodFuncionario()+"	   | "+funcionario.getNome()+"		| "+funcionario.getCPF()+"	| Entregador		| "+funcionario.getData_nascimento()+"	     |";
+					retorno += "\n "+funcionario.getCodFuncionario()+"	   | "+funcionario.getNome()+"		| "+funcionario.getCPF()+"	| Entregador		| "+funcionario.getData_nascimento()+"	     | "+funcionario.getSenha();
 				} else if (funcionario instanceof Gerente) {
-					retorno += "\n "+funcionario.getCodFuncionario()+"		   | "+funcionario.getNome()+"		| "+funcionario.getCPF()+"	| Gerente		| "+funcionario.getData_nascimento()+"	     |";				
+					retorno += "\n "+funcionario.getCodFuncionario()+"		   | "+funcionario.getNome()+"		| "+funcionario.getCPF()+"	| Gerente		| "+funcionario.getData_nascimento()+"	     | "+funcionario.getSenha();				
 				} else {
-					retorno += "\n "+funcionario.getCodFuncionario()+"		   | "+funcionario.getNome()+"		| "+funcionario.getCPF()+"	| Funcionario		| "+funcionario.getData_nascimento()+"	     |";
+					retorno += "\n "+funcionario.getCodFuncionario()+"		   | "+funcionario.getNome()+"		| "+funcionario.getCPF()+"	| Funcionario		| "+funcionario.getData_nascimento()+"	      | "+funcionario.getSenha();
 				}
 			}
-			retorno += "\n------------------------------------------------------------------------------------------------------";
+			retorno += "\n-------------------------------------------------------------------------------------------------------------------------------";
 			
 			return retorno;
 		}
@@ -126,6 +126,18 @@ public class CrudFuncionario implements ICRUD<Funcionario>{
 		}
 		return null;
 		
+	}
+
+	@Override
+	public String LogsAcoes() {
+		String tabelaLogs = "|*-------------------------------------------------------------------------------------------------------------------------------\n";
+		tabelaLogs += "|*- Lista de logs de ações realizadas no sistema\n";
+		tabelaLogs += "|*-------------------------------------------------------------------------------------------------------------------------------\n";
+		for (String logs : LogsAcoes) {
+			tabelaLogs += "|*- "+logs+"\n";
+		}
+		tabelaLogs += "|*-------------------------------------------------------------------------------------------------------------------------------";
+		return tabelaLogs;
 	}
 
 }

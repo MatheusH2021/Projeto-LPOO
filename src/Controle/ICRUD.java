@@ -9,6 +9,7 @@ public interface ICRUD<E>{
 	String deleteDados(String codPesquisa, String Token);
 	Object selectFuncionario(String codPesquisa);
 	String selectDados();
+	String LogsAcoes();
 	
 	
 }

@@ -164,8 +164,8 @@ public class MainCorreio {
 												System.out.print("|*- Informe o CEP do Funcionario (EX:XXXXX-XXX): ");
 												String cep = keyboard.nextLine();
 												Endereco end = new Endereco(rua, numero, bairro, cidade, estado, cep);
-												
-												System.out.println("|*- Qual será o cargo do novo Funcionario: \n[1]- Entregador \n[2]- Funcionario");
+												System.out.println();
+												System.out.print("|*- Qual será o cargo do novo Funcionario: \n[1]- Entregador \n[2]- Funcionario \nSua Escolha: ");
 												if (keyboard.nextInt() == 1) {
 													ent = new Entregador(nome, CPF, end, data_nascimento, senhaCad);
 													System.out.println(crud.insertDados(ent));													
@@ -212,11 +212,13 @@ public class MainCorreio {
 										Thread.sleep(2000);
 										break;
 									case 5:
-										System.out.println("Logs de Ações!");
+										System.out.println(crud.LogsAcoes());
+										Thread.sleep(2000);
 										break;
 									case 6:
 										cont = false;
 										System.out.println("|*- Realiando Logout...!");
+										atualLogado = null;
 										Thread.sleep(1000);
 								}
 							}catch(IllegalArgumentException e) {
