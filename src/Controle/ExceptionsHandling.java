@@ -7,6 +7,7 @@ import Entidades.Gerente;
 import Exceptions.CPFValidacaoException;
 import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
+import Exceptions.ValidaDeleteEncomendaException;
 import Exceptions.ValidaDeleteEntregadorException;
 import Exceptions.ValidaEntregaException;
 import Exceptions.ValidaPesoProdutoException;
@@ -96,6 +97,14 @@ public class ExceptionsHandling {
 		for (Entregas entrega : CrudEncomenda.entregas) {
 			if (entrega.getCodEntregador().equals(codEnt) && entrega.getStatus().equals("À caminho do destinatário")) {
 				throw new ValidaDeleteEntregadorException();
+			}
+		}
+	}
+	
+	public static void ValidaDeleteEncomenda(String codEnc) throws ValidaDeleteEncomendaException{
+		for (Entregas entrega : CrudEncomenda.entregas) {
+			if (entrega.getEncomenda().getCodigo().equals(codEnc)) {
+				throw new ValidaDeleteEncomendaException();
 			}
 		}
 	}

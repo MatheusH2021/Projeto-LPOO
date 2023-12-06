@@ -24,21 +24,6 @@ public class MainCorreio {
 		ICRUD<Encomenda> crudEnc = new CrudEncomenda();
 		boolean cont = true;
 		
-		Date data = new Date();
-		Endereco endereco = new Endereco("rua", 1, "bairro", "cidade", "PE", "55294-200");
-		Gerente fun5 = new Gerente("Paula", "33333333333", endereco, "10/10/2001", "123456");
-		Funcionario fun6 = new Funcionario("Matheus", "44444444444", endereco, "10/10/2001", "123456");
-		Entregador entregador = new Entregador("Jucelino", "55555555555", endereco, "29/10/2001", "123456");
-		Cliente cli = new Cliente("Matheus", "12345678912", endereco);
-		Cliente cli2 = new Cliente("Jussara", "12345678912", endereco);
-		Produto prod = new Produto(cli, cli2, data, (5.20), true);
-		Correspondencia corr = new Correspondencia(cli, cli2, data, "Carta");
-		System.out.println(crud.insertDados(fun5));
-		System.out.println(crud.insertDados(fun6));
-		System.out.println(crud.insertDados(entregador));
-		System.out.println(crudEnc.insertDados(corr));
-		System.out.println(crudEnc.insertDados(prod));
-		
 		while(true){			
 			System.out.println("|*------------------------------------------------------*|");
 			System.out.println("|*- Bem Vindo ao Sistema de Gerenciamento dos Correios -*|");
@@ -313,6 +298,12 @@ public class MainCorreio {
 										atualLogado = null;
 										Thread.sleep(1000);
 										break;
+									default:
+										System.out.println("|*- Opção inválida");
+										cont = false;
+										atualLogado = null;
+										Thread.sleep(1000);
+										break;
 								}
 							}catch(IllegalArgumentException e) {
 								System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
@@ -399,6 +390,12 @@ public class MainCorreio {
 										atualLogado = null;
 										Thread.sleep(1000);
 										break;
+									default:
+										System.out.println("|*- Opção inválida");
+										cont = false;
+										atualLogado = null;
+										Thread.sleep(1000);
+										break;
 								}
 							}catch(IllegalArgumentException e) {
 								System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
@@ -433,8 +430,9 @@ public class MainCorreio {
 							System.out.println("|*- [2]- Atribuir Encomenda a entregador ->                      -|");
 							System.out.println("|*- [3]- Visualizar Entregadores         ->                      -|");
 							System.out.println("|*- [4]- Visualizar Encomendas           ->                      -|");
-							System.out.println("|*- [5]- Visualizar Lista de Entregas    ->                      -|");
-							System.out.println("|*- [6]- Encerrar Sessão                 ->                      -|");
+							System.out.println("|*- [5]- Deleter Encomenda");
+							System.out.println("|*- [6]- Visualizar Lista de Entregas    ->                      -|");
+							System.out.println("|*- [7]- Encerrar Sessão                 ->                      -|");
 							System.out.println("|*----------------------------------------------------------------|");
 							System.out.println("|*- Pressione enter->");
 							keyboard.nextLine();
@@ -632,16 +630,16 @@ public class MainCorreio {
 												keyboard.nextLine();
 												Encomenda enc = null;
 												Entregador ent= null;
-												System.out.println("Informe o codigo da Encomenda a ser entrege: ");
+												System.out.print("Informe o codigo da Encomenda a ser entrege: ");
 												String codEnc = keyboard.nextLine();
 												if (crudEnc.selectPorCodigo(codEnc) == null) {
-													System.out.println("|*- Encomenda não encontrado...");
+													System.out.println("|*- Encomenda não encontrada...");
 													cont_form = false;
 													break;
 												} else {
 													enc = (Encomenda) crudEnc.selectPorCodigo(codEnc);
 												}
-												System.out.println("Informe o codigo do Entregador que será responsável: ");
+												System.out.print("Informe o codigo do Entregador que será responsável: ");
 												String codEnt = keyboard.nextLine();
 												if (crud.selectPorCodigo(codEnt) == null) {
 													System.out.println("|*- Entregador não encontrado...");
@@ -653,7 +651,7 @@ public class MainCorreio {
 												
 												boolean atribuido = CrudEncomenda.atribuirEntregador(ent, enc);
 												if (atribuido) {
-													System.out.println("|*- Encomenda Atrivuida com sucesso!");
+													System.out.println("|*- Encomenda Atribuida com sucesso!");
 													crud.updateDados(ent, "Att entrega");
 													cont_form = false;
 												} else {
@@ -661,11 +659,14 @@ public class MainCorreio {
 												}
 											} catch(IllegalArgumentException e) {
 												System.out.println(e.getMessage());
+												cont_form = false;
 												break;
 											} catch (InputMismatchException e) {
+												cont_form = false;
 												System.out.println("Caracter Inválido");
 												break;
 											} catch (Exception e) {
+												cont_form = false;
 												System.out.println("Erro ao Cadastrar: Tente Novamente!");
 												break;
 											}
@@ -682,6 +683,38 @@ public class MainCorreio {
 										System.out.println(crudEnc.selectDados());
 										break;
 									case 5:
+										keyboard.nextLine();
+										System.out.println("|*- Deletar Encomenda");
+										while(cont_form) {
+											try {
+												System.out.print("Informe o codigo da encomenda: ");
+												String codFN = keyboard.nextLine();
+												System.out.println("Confiram exclusão? \n[1]-Sim \n[2]- Não");
+												switch(keyboard.nextInt()) {
+													case 1:
+														keyboard.nextLine();
+														System.out.println(crudEnc.deleteDados(codFN, ""));
+														cont_form = false;
+														Thread.sleep(2000);
+														break;
+													case 2:
+														System.out.println("Processo encerrado...");
+														cont_form = false;
+														Thread.sleep(2000);
+														break;
+												}
+											}catch(NullPointerException e) {
+												System.out.println(e.getMessage());
+											} catch(IllegalArgumentException e) {
+												System.out.println(e.getMessage());
+											} catch (InputMismatchException e) {
+												System.out.println("Caracter Inválido");
+											} catch (Exception e) {
+												System.out.println("Erro ao Cadastrar: Tente Novamente!");
+											}
+										}
+										break;
+									case 6:
 										System.out.println("|*- Visualizando Lista de Entregas->");
 										for (Entregas entrega : CrudEncomenda.entregas) {
 											System.out.println("|*---------------------------------------------------------------------------------");
@@ -697,9 +730,15 @@ public class MainCorreio {
 										}
 										Thread.sleep(2000);
 										break;
-									case 6:
+									case 7:
 										cont = false;
 										System.out.println("|*- Realiando Logout...!");
+										atualLogado = null;
+										Thread.sleep(1000);
+										break;
+									default:
+										System.out.println("|*- Opção inválida");
+										cont = false;
 										atualLogado = null;
 										Thread.sleep(1000);
 										break;

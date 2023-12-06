@@ -94,10 +94,11 @@ public class CrudFuncionario implements ICRUD<Funcionario>{
 				}catch(ValidaDeleteEntregadorException e) {
 					return "Erro: "+e.getMensagem();
 				}
-			} else if (funcionario instanceof Gerente) {
-				return "Erro: Não é possivel deletar usuarios do tipo gerente, caso esqueceu sua senha altere na opção 3 do menu.";
-			}
+			} 
 			if (funcionario.getCodFuncionario().equals(codPesquisa)) {
+				if (funcionario instanceof Gerente) {
+					return "Erro: Não é possivel deletar usuarios do tipo gerente, caso esqueceu sua senha altere na opção 3 do menu.";
+				}
 				funcionarios.remove(funcionario);
 				LogsAcoes.add("Funcionario Deletado: Data->"+this.Data+" | Codigo do Funcionario Deletado->"+codPesquisa+" | Gerente Responsavel->GR0001");
 				return "|*- Funcionario deletado com sucesso!";

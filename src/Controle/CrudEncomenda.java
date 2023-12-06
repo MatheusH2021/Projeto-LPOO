@@ -10,6 +10,7 @@ import Entidades.Produto;
 import Exceptions.CPFValidacaoException;
 import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
+import Exceptions.ValidaDeleteEncomendaException;
 import Exceptions.ValidaEntregaException;
 import Exceptions.ValidaPesoProdutoException;
 
@@ -152,8 +153,19 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 
 	@Override
 	public String deleteDados(String codPesquisa, String Token) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			ExceptionsHandling.ValidaDeleteEncomenda(codPesquisa);
+ 		}catch(ValidaDeleteEncomendaException e) {
+ 			return "Erro: "+e.getMensagem();
+ 		}
+		for (Encomenda encomenda : encomendas) {
+			if (encomenda.getCodigo().equals(codPesquisa)) {
+				encomendas.remove(encomenda);
+				CrudFuncionario.LogsAcoes.add("Encomenda Deletada: Data->"+this.Data+" | Codigo da Encomenda Deletado->"+codPesquisa+" |");
+				return "|*- Encomenda deletada com sucesso!";
+			}			
+		}
+		return "|*- Encomenda não encontrada...";
 	}
 
 	@Override
