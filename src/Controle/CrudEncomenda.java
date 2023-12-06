@@ -10,6 +10,7 @@ import Entidades.Produto;
 import Exceptions.CPFValidacaoException;
 import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
+import Exceptions.ValidaEntregaException;
 import Exceptions.ValidaPesoProdutoException;
 
 public class CrudEncomenda implements ICRUD<Encomenda>{
@@ -110,11 +111,17 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 	}
 	
 	public static boolean atribuirEntregador(Entregador ent, Encomenda enc) {
+		try {
+			ExceptionsHandling.ValidaEntrega(enc.getCodigo());
+		}catch(ValidaEntregaException e) {
+			return false;
+		}
 		Entregas entrega = new Entregas(enc);
 		ent.setEntregas(entrega);
 		CrudEncomenda.entregas.add(entrega);
 		return true;
 	}
+
 	@Override
 	public String updateDados(Encomenda novosDados, String Token) {
 		return null;

@@ -11,6 +11,7 @@ import Entidades.Correspondencia;
 import Entidades.Encomenda;
 import Entidades.Endereco;
 import Entidades.Entregador;
+import Entidades.Entregas;
 import Entidades.Funcionario;
 import Entidades.Gerente;
 import Entidades.Produto;
@@ -293,6 +294,7 @@ public class MainCorreio {
 						cont = true;
 						
 						while(cont) {
+							boolean cont_form = true;
 							System.out.println("|*---------------------------------------------------------------*|");
 							System.out.println("|*- Bem Vindo Entregador "+atualLogado.getNome()+"                             -*|");
 							System.out.println("|*- No Modulo de Entregador, você possui as seguintes funções   -*|");
@@ -309,7 +311,46 @@ public class MainCorreio {
 							try {
 								switch(keyboard.nextInt()) {
 									case 1:
-										System.out.println("Gerenciando entregas");
+										while(cont_form) {
+											System.out.println("|*- Gerenciamento de Entregas-> ");
+											try {
+												keyboard.nextLine();
+												System.out.print("|*- Informe o codigo da encomenda que deseja alterar: ");
+												String codEntr = keyboard.nextLine();
+												System.out.println("|*- Esolha o novo status para a entraga escolhida \n|*- [1]- Entregue \n|*- [2]- Entrega Cancelada \n|*- Sua Escolha: ");
+												try {
+													switch(keyboard.nextInt()) {
+													case 1:
+														System.out.println(atualLogado.gerenciarEntrega("Entregue", codEntr));
+//														crud.updateDados(atualLogado, "Att entrega");
+														cont_form = false;
+														break;
+													case 2:
+														System.out.println(atualLogado.gerenciarEntrega("Entrega Cancelada", codEntr));
+//														crud.updateDados(atualLogado, "Att entrega");
+														cont_form = false;													
+														break;													
+													}
+												}catch(IllegalArgumentException e) {
+													System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
+													break;
+												} catch (InputMismatchException e) {
+													System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
+													break;
+												} catch(Exception e) {
+													System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
+												}
+											}catch(IllegalArgumentException e) {
+												System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
+												break;
+											} catch (InputMismatchException e) {
+												System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
+												break;
+											} catch(Exception e) {
+												System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
+											}
+										}
+										Thread.sleep(2000);
 										break;
 									case 2:
 										System.out.println(atualLogado.visualizarEntregas());
@@ -353,7 +394,8 @@ public class MainCorreio {
 							System.out.println("|*- [2]- Atribuir Encomenda a entregador ->                      -|");
 							System.out.println("|*- [3]- Visualizar Entregadores         ->                      -|");
 							System.out.println("|*- [4]- Visualizar Encomendas           ->                      -|");
-							System.out.println("|*- [5]- Encerrar Sessão                 ->                      -|");
+							System.out.println("|*- [5]- Visualizar Lista de Entregas    ->                      -|");
+							System.out.println("|*- [6]- Encerrar Sessão                 ->                      -|");
 							System.out.println("|*----------------------------------------------------------------|");
 							System.out.print("|*- Sua Escolha: ");				
 							try {
@@ -439,7 +481,7 @@ public class MainCorreio {
 															cpfRem = keyboard.nextLine();
 															System.out.print("|*- Informe a Rua do remetente: ");
 															ruaRem = keyboard.nextLine();
-															System.out.print("|*- Informe o numero da casa do remetente (Informe apenas numeros): ");
+															System.out.print("|*- Informe o numero da casa do remetente (Obs: Informe apenas numeros): ");
 															numRem = keyboard.nextInt();
 															System.out.print("|*- Informe o Bairro do remetente: ");
 															bairroRem = keyboard.nextLine();
@@ -458,7 +500,7 @@ public class MainCorreio {
 															cpfDes = keyboard.nextLine();
 															System.out.print("|*- Informe a Rua do Destinatário: ");
 															ruaDes = keyboard.nextLine();
-															System.out.print("|*- Informe o numero da casa do Destinatário: ");
+															System.out.print("|*- Informe o numero da casa do Destinatário (Obs: Informe apenas numeros): ");
 															numDes = keyboard.nextInt();
 															System.out.print("|*- Informe o Bairro do Destinatário: ");
 															bairroDes = keyboard.nextLine();
@@ -467,7 +509,7 @@ public class MainCorreio {
 															cidadeDes = keyboard.nextLine();
 															System.out.print("|*- Informe o estado do Destinatário (Obs: apenas a sigla do estado, EX: SP, PE, RJ): ");
 															estadoDes = keyboard.nextLine();
-															System.out.print("|*- Informe o CEP do Destinatário (EX: XXXXX-XX, Inclua o traço)");
+															System.out.print("|*- Informe o CEP do Destinatário (EX: XXXXX-XXX, Inclua o traço)");
 															cepDes = keyboard.nextLine();
 															System.out.println();
 															System.out.print("|*- Informe o peso do produto a ser enviado: ");
@@ -558,7 +600,7 @@ public class MainCorreio {
 													crud.updateDados(ent, "Att entrega");
 													cont_form = false;
 												} else {
-													System.out.println("|*- Erro ao atribiuir encomenda...");
+													System.out.println("|*- Erro ao atribiuir encomenda, Encomenda já consta na lista de entregas...");
 												}
 											} catch(IllegalArgumentException e) {
 												System.out.println(e.getMessage());
@@ -568,6 +610,7 @@ public class MainCorreio {
 												System.out.println("Erro ao Cadastrar: Tente Novamente!");
 											}
 										}
+										Thread.sleep(2000);
 										break;
 									case 3:
 										System.out.println("|*- Visualizando entregadores.");
@@ -579,6 +622,22 @@ public class MainCorreio {
 										System.out.println(crudEnc.selectDados());
 										break;
 									case 5:
+										System.out.println("|*- Visualizando Lista de Entregas->");
+										for (Entregas entrega : CrudEncomenda.entregas) {
+											System.out.println("|*---------------------------------------------------------------------------------");
+											System.out.println("\n|*- Cod Entrega            -> "+entrega.getCodEntrega());
+											System.out.println("\n|*- Status Entrega         -> "+entrega.getStatus());
+											System.out.println("\n|*- Cod Entregador         -> "+entrega.getCodEntregador());
+											Entregador ent = (Entregador) crud.selectPorCodigo(entrega.getCodEntregador());
+											System.out.println("\n|*- Entregador Responsalve -> "+ent.getNome());
+											System.out.println("\n|*- Endereco de entrega    -> "+entrega.getEncomenda().getDestinatario().getEndereco());
+											System.out.println("\n|*- Destinatario           -> "+entrega.getEncomenda().getDestinatario().getNome());
+											System.out.println("\n|*- Remetente              -> "+entrega.getEncomenda().getRemetente().getNome());
+											System.out.println("\n/*---------------------------------------------------------------------------------");
+										}
+										Thread.sleep(2000);
+										break;
+									case 6:
 										cont = false;
 										System.out.println("|*- Realiando Logout...!");
 										atualLogado = null;

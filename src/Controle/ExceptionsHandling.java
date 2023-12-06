@@ -1,23 +1,18 @@
 package Controle;
-import java.util.ArrayList;
 
 import Entidades.Endereco;
+import Entidades.Entregas;
 import Entidades.Funcionario;
 import Entidades.Gerente;
 import Exceptions.CPFValidacaoException;
 import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
+import Exceptions.ValidaEntregaException;
 import Exceptions.ValidaPesoProdutoException;
 import Exceptions.ValidaTokenException;
 
 public class ExceptionsHandling {
-	
-	ArrayList<String> LogErros;
-
-	public ExceptionsHandling() {
-		LogErros = new ArrayList<String>();
-	}
-	
+		
 	public static void CpfValidacao (String CPF) throws CPFValidacaoException {
 		if (CPF.isEmpty()) {
 			throw new CPFValidacaoException("O CPF não pode ser vazio");
@@ -59,6 +54,9 @@ public class ExceptionsHandling {
 				}
 			}
 		}
+		if (token.equals("Att entrega")) {
+			notFound = true;
+		}
 		if (notFound) {
 			throw new ValidaTokenException();
 		}
@@ -85,6 +83,14 @@ public class ExceptionsHandling {
 			throw new ValidaPesoProdutoException();
 		} else if (peso > 20){
 			throw new ValidaPesoProdutoException("Pesso acima do permitido! Máximo: 20kg.");
+		}
+	}
+	
+	public static void ValidaEntrega(String codEnc) throws ValidaEntregaException{
+		for (Entregas entrega : CrudEncomenda.entregas) {
+			if (entrega.getEncomenda().getCodigo().equals(codEnc)) {
+				throw new ValidaEntregaException();
+			}
 		}
 	}
 	private static boolean ExisteCPF(String CPF) {

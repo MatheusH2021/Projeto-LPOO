@@ -21,7 +21,7 @@ public class Entregas {
 			for (Entregas entrega : CrudEncomenda.entregas) {
 				codigo += 1;
 			}
-			novoCodigo = "CRR000"+String.valueOf(codigo + 1);
+			novoCodigo = "ENTR000"+String.valueOf(codigo + 1);
 			
 			this.setCodEntrega(novoCodigo);
 		}
