@@ -21,6 +21,19 @@ public class Entregador extends Funcionario{
 						        "\n|*- Status da entretga: "+entregas2.getStatus()+
 						        "\n|*- Endereco de Entrega: "+entregas2.getEncomenda().getDestinatario().getEndereco()+
 						        "\n|*- Destinatário: "+entregas2.getEncomenda().getDestinatario().getNome();
+						        if (entregas2.getEncomenda() instanceof Produto) {
+						        	Produto prod = (Produto) entregas2.getEncomenda();
+						        	if (prod.isFragil()) {
+						        		visuEntregas += "\n|*- É fragil: Sim";
+						        	} else {
+						        		visuEntregas += "\n|*- É fragil: Não";
+						        	}
+						        	visuEntregas += "\n|*- Peso: "+prod.getPeso()+" Kg";
+						        } else if(entregas2.getEncomenda() instanceof Correspondencia) {
+						        	Correspondencia prod = (Correspondencia) entregas2.getEncomenda();
+						        	visuEntregas += "\n|*- Tipo de Correspondencia: "+prod.getTipoCorrespondencia();
+						        }
+								
 				visuEntregas += "\n--------------------------------------------------------------------------------------------------------------\n";
 			}
 			return visuEntregas;

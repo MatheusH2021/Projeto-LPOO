@@ -255,7 +255,7 @@ public class MainCorreio {
 											try {
 												System.out.print("Informe o codigo de cadastro do funcionario: ");
 												String codFN = keyboard.nextLine();
-												System.out.println("Confiram exclusão? \n[1]-Sim \n[2]- Não \n|*- Sua Escolha: ");
+												System.out.print("Confiram exclusão? \n[1]-Sim \n[2]-Não \n|*- Sua Escolha: ");
 												switch(keyboard.nextInt()) {
 													case 1:
 														keyboard.nextLine();
@@ -655,7 +655,7 @@ public class MainCorreio {
 													crud.updateDados(ent, "Att entrega");
 													cont_form = false;
 												} else {
-													System.out.println("|*- Erro ao atribiuir encomenda, Encomenda já consta na lista de entregas...");
+													System.out.println("|*- Erro ao atribuir encomenda, Encomenda já consta na lista de entregas...");
 												}
 											} catch(IllegalArgumentException e) {
 												System.out.println(e.getMessage());
@@ -689,7 +689,7 @@ public class MainCorreio {
 											try {
 												System.out.print("Informe o codigo da encomenda: ");
 												String codFN = keyboard.nextLine();
-												System.out.println("Confiram exclusão? \n[1]-Sim \n[2]- Não \n|*- Sua Escolha: ");
+												System.out.println("Confirmar exclusão? \n[1]-Sim \n[2]- Não \n|*- Sua Escolha: ");
 												switch(keyboard.nextInt()) {
 													case 1:
 														keyboard.nextLine();
