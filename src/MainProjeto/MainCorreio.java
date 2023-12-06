@@ -255,7 +255,7 @@ public class MainCorreio {
 											try {
 												System.out.print("Informe o codigo de cadastro do funcionario: ");
 												String codFN = keyboard.nextLine();
-												System.out.println("Confiram exclusão? \n[1]-Sim \n[2]- Não");
+												System.out.println("Confiram exclusão? \n[1]-Sim \n[2]- Não \n|*- Sua Escolha: ");
 												switch(keyboard.nextInt()) {
 													case 1:
 														keyboard.nextLine();
@@ -430,7 +430,7 @@ public class MainCorreio {
 							System.out.println("|*- [2]- Atribuir Encomenda a entregador ->                      -|");
 							System.out.println("|*- [3]- Visualizar Entregadores         ->                      -|");
 							System.out.println("|*- [4]- Visualizar Encomendas           ->                      -|");
-							System.out.println("|*- [5]- Deleter Encomenda");
+							System.out.println("|*- [5]- Deleter Encomenda               ->                      -|");
 							System.out.println("|*- [6]- Visualizar Lista de Entregas    ->                      -|");
 							System.out.println("|*- [7]- Encerrar Sessão                 ->                      -|");
 							System.out.println("|*----------------------------------------------------------------|");
@@ -467,7 +467,7 @@ public class MainCorreio {
 															String cidadeRem = keyboard.nextLine();
 															System.out.print("|*- Informe o estado do remetente (Obs: apenas a sigla do estado, EX: SP, PE, RJ): ");
 															String estadoRem = keyboard.nextLine();
-															System.out.print("|*- Informe o CEP do remetente (EX: XXXXX-XX, Inclua o traço)");
+															System.out.print("|*- Informe o CEP do remetente (EX: XXXXX-XXX, Inclua o traço)");
 															String cepRem = keyboard.nextLine();
 															System.out.println();
 															System.out.println("|*- Cadastro do Destinatário->");
@@ -689,7 +689,7 @@ public class MainCorreio {
 											try {
 												System.out.print("Informe o codigo da encomenda: ");
 												String codFN = keyboard.nextLine();
-												System.out.println("Confiram exclusão? \n[1]-Sim \n[2]- Não");
+												System.out.println("Confiram exclusão? \n[1]-Sim \n[2]- Não \n|*- Sua Escolha: ");
 												switch(keyboard.nextInt()) {
 													case 1:
 														keyboard.nextLine();
