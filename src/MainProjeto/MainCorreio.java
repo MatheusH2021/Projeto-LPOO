@@ -720,9 +720,11 @@ public class MainCorreio {
 											System.out.println("|*---------------------------------------------------------------------------------");
 											System.out.println("\n|*- Cod Entrega            -> "+entrega.getCodEntrega());
 											System.out.println("\n|*- Status Entrega         -> "+entrega.getStatus());
-											System.out.println("\n|*- Cod Entregador         -> "+entrega.getCodEntregador());
 											Entregador ent = (Entregador) crud.selectPorCodigo(entrega.getCodEntregador());
-											System.out.println("\n|*- Entregador Responsalve -> "+ent.getNome());
+											if (ent != null) {
+												System.out.println("\n|*- Cod Entregador         -> "+entrega.getCodEntregador());
+												System.out.println("\n|*- Entregador Responsalve -> "+ent.getNome());												
+											}
 											System.out.println("\n|*- Endereco de entrega    -> "+entrega.getEncomenda().getDestinatario().getEndereco());
 											System.out.println("\n|*- Destinatario           -> "+entrega.getEncomenda().getDestinatario().getNome());
 											System.out.println("\n|*- Remetente              -> "+entrega.getEncomenda().getRemetente().getNome());
