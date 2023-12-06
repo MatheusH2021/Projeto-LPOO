@@ -1,21 +1,107 @@
 package Controle;
 import java.util.ArrayList;
+import java.util.Date;
 
+import Entidades.Correspondencia;
 import Entidades.Encomenda;
+import Entidades.Produto;
+import Exceptions.CPFValidacaoException;
+import Exceptions.EnderecoValidacaoException;
+import Exceptions.ValidaCamposException;
 
 public class CrudEncomenda implements ICRUD<Encomenda>{
 	
-	protected static ArrayList<Encomenda> encomendas = new ArrayList<Encomenda>();
+	public static ArrayList<Encomenda> encomendas;
+	public static boolean acaoSucesso = true;
+	public Date Data;
 	
+	public CrudEncomenda() {
+		encomendas = new ArrayList<Encomenda>();
+		Data = new Date();
+	}
 	@Override
 	public String insertDados(Encomenda dados) {
-		// TODO Auto-generated method stub
-		return null;
+		if (dados instanceof Correspondencia) {
+			Correspondencia novaEnc = (Correspondencia) dados;
+			try {
+				ExceptionsHandling.CpfValidacao(novaEnc.getDestinatario().getCPF());
+				ExceptionsHandling.CpfValidacao(novaEnc.getRemetente().getCPF());
+				ExceptionsHandling.CampoVazio(novaEnc.getDestinatario().getNome(), "Nome");
+				ExceptionsHandling.CampoVazio(novaEnc.getRemetente().getNome(), "Nome");
+				ExceptionsHandling.ValidaEndereco(novaEnc.getDestinatario().getEndereco());
+				ExceptionsHandling.ValidaEndereco(novaEnc.getRemetente().getEndereco());
+			}catch(CPFValidacaoException e) {
+				CrudEncomenda.acaoSucesso = false;
+				return "|*- Erro: "+e.getMessage();
+			} catch(ValidaCamposException e) {
+				CrudEncomenda.acaoSucesso = false;
+				return "|*- Erro: "+e.getMessage();
+			} catch (EnderecoValidacaoException e) {
+				CrudEncomenda.acaoSucesso = false;
+				return "|*- Erro: "+e.getMessage();
+			}
+			
+			encomendas.add(novaEnc);
+			CrudFuncionario.LogsAcoes.add("Novo Funcionario Inserido: Data->"+this.Data+" | Codigo do novo Funcionario->"+novaEnc.getCodigo()+" | Gerente Responsavel->GR0001");
+			CrudEncomenda.acaoSucesso = true;
+			
+			return "Encomenda Cadastrada com sucesso!";
+			
+		} else if (dados instanceof Produto) {
+			Produto novaEnc = (Produto) dados;
+			try {
+				ExceptionsHandling.CpfValidacao(novaEnc.getDestinatario().getCPF());
+				ExceptionsHandling.CpfValidacao(novaEnc.getRemetente().getCPF());
+				ExceptionsHandling.CampoVazio(novaEnc.getDestinatario().getNome(), "Nome");
+				ExceptionsHandling.CampoVazio(novaEnc.getRemetente().getNome(), "Nome");
+				ExceptionsHandling.ValidaEndereco(novaEnc.getDestinatario().getEndereco());
+				ExceptionsHandling.ValidaEndereco(novaEnc.getRemetente().getEndereco());
+			}catch(CPFValidacaoException e) {
+				CrudEncomenda.acaoSucesso = false;
+				return "|*- Erro: "+e.getMessage();
+			} catch(ValidaCamposException e) {
+				CrudEncomenda.acaoSucesso = false;
+				return "|*- Erro: "+e.getMessage();
+			} catch (EnderecoValidacaoException e) {
+				CrudEncomenda.acaoSucesso = false;
+				return "|*- Erro: "+e.getMessage();
+			}
+			
+			encomendas.add(novaEnc);
+			CrudFuncionario.LogsAcoes.add("Novo Funcionario Inserido: Data->"+this.Data+" | Codigo do novo Funcionario->"+novaEnc.getCodigo()+" | Gerente Responsavel->GR0001");
+			CrudEncomenda.acaoSucesso = true;
+			
+			return "Encomenda Cadastrada com sucesso!";
+			
+		} else {
+			CrudEncomenda.acaoSucesso = false;
+			return "Erro ao cadastrar Encomenda.";
+		}
 	}
 
 	@Override
-	public String updateDados(Encomenda novosDados) {
-		// TODO Auto-generated method stub
+	public String selectDados() {
+		if (encomendas.isEmpty()) {
+			return "Sem encomendas cadastradas";
+		} else {
+			String retorno = "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+			retorno += "Codigo Encomenda | Data de Postagem                         | Remetente 		| Destinatario 		| Tipo de Encomenda | Endereco Entrega ";
+			retorno += "\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+			for (Encomenda encomenda : encomendas) {
+				if (encomenda instanceof Correspondencia) {
+					retorno += "\n "+encomenda.getCodigo()+" | "+encomenda.getDataPostagem()+" | "+encomenda.getRemetente().getNome()+"	| "+encomenda.getDestinatario().getNome()+" | "+" | Correspondencia | "+encomenda.getDestinatario().getEndereco();
+				} else if (encomenda instanceof Produto) {
+					retorno += "\n "+encomenda.getCodigo()+" | "+encomenda.getDataPostagem()+" | "+encomenda.getRemetente().getNome()+"	| "+encomenda.getDestinatario().getNome()+" | "+" | Produto | "+encomenda.getDestinatario().getEndereco();				
+				} 
+			}
+			retorno += "\n-------------------------------------------------------------------------------------------------------------------------------";
+			
+			return retorno;
+		}
+	}
+	
+	@Override
+	public String updateDados(Encomenda novosDados, String Token) {
 		return null;
 	}
 
@@ -26,16 +112,11 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 	}
 
 	@Override
-	public Encomenda selectFuncionario(String codPesquisa) {
+	public Encomenda selectPorCodigo(String codPesquisa) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public String selectDados() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public String LogsAcoes() {

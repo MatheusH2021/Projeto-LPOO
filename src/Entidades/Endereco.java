@@ -1,6 +1,7 @@
 package Entidades;
 
 public class Endereco {
+
 	private String Rua, Bairro, Cidade, Estado, CEP;
 	private int Numero;
 	
@@ -11,6 +12,12 @@ public class Endereco {
 		this.setCidade(cidade);
 		this.setEstado(estado);
 		this.setCEP(CEP);
+	}
+	
+	@Override
+	public String toString() {
+		return "Endereco: Rua: " + Rua + " | Bairro=" + Bairro + " | Cidade=" + Cidade + " | Estado=" + Estado + " | CEP="
+				+ CEP + " | Numero=" + Numero + " |";
 	}
 
 	public String getRua() {

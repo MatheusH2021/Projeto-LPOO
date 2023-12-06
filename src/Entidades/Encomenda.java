@@ -1,24 +1,42 @@
 package Entidades;
 import java.util.Date;
 
+import Controle.CrudEncomenda;
+
 public abstract class Encomenda {
 	private String Codigo;
 	private Cliente Destinatario;
 	private Cliente Remetente;
 	private Date DataPostagem;
 	
-	public Encomenda(String codigo, Cliente destinatario, Cliente remetente, Date dataPostagem) {
-		this.setCodigo(codigo);
+	public Encomenda(Cliente destinatario, Cliente remetente, Date dataPostagem) {
+		this.gerarCodEncomeda();
 		this.setDestinatario(destinatario);
 		this.setRemetente(remetente);
 		this.setDataPostagem(dataPostagem);
 	}
-
+	
+	private void gerarCodEncomeda() {
+		if (CrudEncomenda.encomendas.isEmpty()) {
+			String codEncomenda = "CRR0001";
+			this.setCodigo(codEncomenda);
+		} else {
+			int codigo = 0;
+			String novoCodigo = "";
+			for (Encomenda encomenda : CrudEncomenda.encomendas) {
+				codigo += 1;
+			}
+			novoCodigo = "CRR000"+String.valueOf(codigo + 1);
+			
+			this.setCodigo(novoCodigo);
+		}
+	}
+	
 	public String getCodigo() {
 		return Codigo;
 	}
 
-	public void setCodigo(String codigo) {
+	private void setCodigo(String codigo) {
 		Codigo = codigo;
 	}
 

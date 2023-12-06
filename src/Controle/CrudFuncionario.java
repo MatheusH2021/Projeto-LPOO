@@ -34,13 +34,13 @@ public class CrudFuncionario implements ICRUD<Funcionario>{
 			ExceptionsHandling.CampoVazio(novoFuncionario.getData_nascimento(), "Data de Nascimento");
 		}catch(CPFValidacaoException e) {
 			CrudFuncionario.actionSuccess = false;
-			return "Erro: "+e.getMessage();
+			return "|*- Erro: "+e.getMessage();
 		} catch(ValidaCamposException e) {
 			CrudFuncionario.actionSuccess = false;
-			return "Erro: "+e.getMessage();
+			return "|*- Erro: "+e.getMessage();
 		} catch (EnderecoValidacaoException e) {
 			CrudFuncionario.actionSuccess = false;
-			return "Erro: "+e.getMessage();
+			return "|*- Erro: "+e.getMessage();
 		}
 		
 		funcionarios.add(novoFuncionario);
@@ -50,13 +50,30 @@ public class CrudFuncionario implements ICRUD<Funcionario>{
 		CrudFuncionario.actionSuccess = true;
 		/*-------------------------------------*/
 		
-		return "Funcionario Cadastrado com sucesso!";
+		return "|*- Funcionario Cadastrado com sucesso!";
 	}
 
 	@Override
-	public String updateDados(Funcionario novosDados) {
-		
-		return null;
+	public String updateDados(Funcionario novosDados, String Token) {
+		try {
+			ExceptionsHandling.CampoVazio(novosDados.getSenha(), "Senha");
+			ExceptionsHandling.ValidaToken(Token);
+		}catch(ValidaCamposException e) {
+			CrudFuncionario.actionSuccess = false;
+			return "|*- Erro: "+e.getMessage();
+		}catch(ValidaTokenException e) {
+			CrudFuncionario.actionSuccess = false;
+			return "|*- Erro: "+e.getMensagem();
+		}
+		for (Funcionario func : funcionarios) {
+			if (func.getCodFuncionario().equals(novosDados.getCodFuncionario())) {
+				func.setSenha(novosDados.getSenha());
+				CrudFuncionario.actionSuccess = true;
+				return "|*- Senha de funcionario atualizada com sucesso!";
+			}
+		}
+		CrudFuncionario.actionSuccess = true;
+		return "|*- Erro ao atualizar senha de funcionario, tente novamente.";
 	}
 
 	@Override
@@ -65,16 +82,16 @@ public class CrudFuncionario implements ICRUD<Funcionario>{
 		try {
 			ExceptionsHandling.ValidaToken(Token);
 		}catch(ValidaTokenException e) {
-			return e.getMensagem()+" Não Foi possivel deletar o funcionario!";
+			return "|*- "+e.getMensagem()+" Não Foi possivel deletar o funcionario!";
 		}
 		for (Funcionario funcionario : funcionarios) {
 			if (funcionario.getCodFuncionario().equals(codPesquisa)) {
 				funcionarios.remove(funcionario);
 				LogsAcoes.add("Funcionario Deletado: Data->"+this.Data+" | Codigo do Funcionario Deletado->"+codPesquisa+" | Gerente Responsavel->GR0001");
-				return "Funcionario deletado com sucesso!";
+				return "|*- Funcionario deletado com sucesso!";
 			}
 		}
-		return "Erro ao deletar Funcionario!";
+		return "|*- Erro ao deletar Funcionario!";
 	}
 
 	@Override
@@ -107,14 +124,14 @@ public class CrudFuncionario implements ICRUD<Funcionario>{
 		}catch(ValidaCamposException e) {
 			return null;
 		}
-		Funcionario logado = selectFuncionario(codFunc);
+		Funcionario logado = selectPorCodigo(codFunc);
 		if (logado != null && logado.getSenha().equals(senha)) {
 			return logado;
 		}
 		return null;
 	}
 	@Override
-	public Funcionario selectFuncionario(String codFun) {
+	public Funcionario selectPorCodigo(String codFun) {
 		if (funcionarios.isEmpty()) {
 			return null;
 		} else {

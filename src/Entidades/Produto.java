@@ -5,8 +5,8 @@ public class Produto extends Encomenda{
 	public double Peso;
 	public boolean Fragil;
 	
-	public Produto(String codigo, Cliente destinatario, Cliente remetente, Date dataPostagem, double peso, boolean fragil) {
-		super(codigo, destinatario, remetente, dataPostagem);
+	public Produto(Cliente destinatario, Cliente remetente, Date dataPostagem, double peso, boolean fragil) {
+		super(destinatario, remetente, dataPostagem);
 		this.setPeso(peso);
 		this.setFragil(fragil);
 	}
