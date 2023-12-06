@@ -1,16 +1,30 @@
 package Entidades;
-import java.sql.Date;
+
+import Controle.CrudEncomenda;
 
 public class Entregas {
 	private String codEntrega, codEntregador, Status;
 	private Encomenda encomenda;
-	private Date Data_entrega;
 	
-	public Entregas(String codEntrega, String codEntregador, Encomenda encomenda, Date data_entrega, String status) {		
-		this.setCodEntrega(codEntrega);
-		this.setEncomenda(encomenda);
-		this.setData_entrega(data_entrega);
-		
+	public Entregas(Encomenda encomenda) {
+		this.gerarCodEntrega();
+		this.setEncomenda(encomenda);		
+	}
+	
+	private void gerarCodEntrega() {
+		if (CrudEncomenda.entregas.isEmpty()) {
+			String codEntrega = "ENTR0001";
+			this.setCodEntrega(codEntrega);
+		} else {
+			int codigo = 0;
+			String novoCodigo = "";
+			for (Entregas entrega : CrudEncomenda.entregas) {
+				codigo += 1;
+			}
+			novoCodigo = "CRR000"+String.valueOf(codigo + 1);
+			
+			this.setCodEntrega(novoCodigo);
+		}
 	}
 	
 	public String getCodEntrega() {
@@ -37,12 +51,6 @@ public class Entregas {
 		this.encomenda = encomenda;
 	}
 	
-	public Date getData_entrega() {
-		return Data_entrega;
-	}
-	public void setData_entrega(Date data_entrega) {
-		Data_entrega = data_entrega;
-	}
 	public String getStatus() {
 		return Status;
 	}

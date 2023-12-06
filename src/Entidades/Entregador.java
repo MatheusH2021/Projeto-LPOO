@@ -14,7 +14,13 @@ public class Entregador extends Funcionario{
 	
 	public String visualizarEntregas() {
 		if (temEntrega()) {
-			String visuEntregas = "";
+			String visuEntregas = "--------------------------------------------------------------------------------------------------------\n";
+			visuEntregas += "Codigo Entrega | Status                    | Endereço de entrega \n";
+			visuEntregas += "--------------------------------------------------------------------------------------------------------------\n";
+			for (Entregas entregas2 : entregas) {
+				visuEntregas += entregas2.getCodEntrega()+"       | "+entregas2.getStatus()+" | "+entregas2.getEncomenda().getDestinatario().getEndereco()+"\n";
+			}
+			visuEntregas += "--------------------------------------------------------------------------------------------------------------\n";
 			return visuEntregas;
 		} else {
 			return "|*- Sem entregas para visualizar ";

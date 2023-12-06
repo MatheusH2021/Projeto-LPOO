@@ -7,6 +7,7 @@ import Entidades.Gerente;
 import Exceptions.CPFValidacaoException;
 import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
+import Exceptions.ValidaPesoProdutoException;
 import Exceptions.ValidaTokenException;
 
 public class ExceptionsHandling {
@@ -79,6 +80,13 @@ public class ExceptionsHandling {
 		}
 	}
 	
+	public static void ValidaPesoProduto(double peso) throws ValidaPesoProdutoException{
+		if (peso < 0) {
+			throw new ValidaPesoProdutoException();
+		} else if (peso > 20){
+			throw new ValidaPesoProdutoException("Pesso acima do permitido! Máximo: 20kg.");
+		}
+	}
 	private static boolean ExisteCPF(String CPF) {
 		for (Funcionario funcionario : CrudFuncionario.funcionarios) {
 			if (funcionario.getCPF().equals(CPF)) {

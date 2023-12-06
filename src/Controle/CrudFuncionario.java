@@ -67,8 +67,9 @@ public class CrudFuncionario implements ICRUD<Funcionario>{
 		}
 		for (Funcionario func : funcionarios) {
 			if (func.getCodFuncionario().equals(novosDados.getCodFuncionario())) {
-				func.setSenha(novosDados.getSenha());
+				func = novosDados;
 				CrudFuncionario.actionSuccess = true;
+				LogsAcoes.add("Edição de senha de funcionario: Data->"+this.Data+" | Codigo do Funcionario editado->"+novosDados.getCodFuncionario()+" | Gerente Responsavel->GR0001");
 				return "|*- Senha de funcionario atualizada com sucesso!";
 			}
 		}
@@ -116,6 +117,23 @@ public class CrudFuncionario implements ICRUD<Funcionario>{
 			return retorno;
 		}
 		
+	}
+	public static String visualizaEntregadores() {
+		if (funcionarios.isEmpty()) {
+			return "Sem Funcionarios Cadastrados";
+		} else {
+			String retorno = "-------------------------------------------------------------------------------------------------------------------------------\n";
+			retorno += "Codigo Funcionario | Nome 		| CPF 		| Cargo 		| Data De nascimento |";
+			retorno += "\n-------------------------------------------------------------------------------------------------------------------------------";
+			for (Funcionario funcionario : funcionarios) {
+				if (funcionario instanceof Entregador) {
+					retorno += "\n "+funcionario.getCodFuncionario()+"	   | "+funcionario.getNome()+"		| "+funcionario.getCPF()+"	| Entregador		| "+funcionario.getData_nascimento()+"	     | ";
+				}
+			}
+			retorno += "\n-------------------------------------------------------------------------------------------------------------------------------";
+			
+			return retorno;
+		}
 	}
 	public Funcionario realizaLogin(String codFunc, String senha) {
 		try {

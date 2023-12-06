@@ -4,19 +4,24 @@ import java.util.Date;
 
 import Entidades.Correspondencia;
 import Entidades.Encomenda;
+import Entidades.Entregador;
+import Entidades.Entregas;
 import Entidades.Produto;
 import Exceptions.CPFValidacaoException;
 import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
+import Exceptions.ValidaPesoProdutoException;
 
 public class CrudEncomenda implements ICRUD<Encomenda>{
 	
 	public static ArrayList<Encomenda> encomendas;
+	public static ArrayList<Entregas> entregas;
 	public static boolean acaoSucesso = true;
 	public Date Data;
 	
 	public CrudEncomenda() {
 		encomendas = new ArrayList<Encomenda>();
+		entregas = new ArrayList<Entregas>();
 		Data = new Date();
 	}
 	@Override
@@ -42,7 +47,7 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 			}
 			
 			encomendas.add(novaEnc);
-			CrudFuncionario.LogsAcoes.add("Novo Funcionario Inserido: Data->"+this.Data+" | Codigo do novo Funcionario->"+novaEnc.getCodigo()+" | Gerente Responsavel->GR0001");
+			CrudFuncionario.LogsAcoes.add("Nova Encomenda Inserido: Data->"+this.Data+" | Codigo da encomenda inserida->"+novaEnc.getCodigo()+" |");
 			CrudEncomenda.acaoSucesso = true;
 			
 			return "Encomenda Cadastrada com sucesso!";
@@ -56,6 +61,7 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 				ExceptionsHandling.CampoVazio(novaEnc.getRemetente().getNome(), "Nome");
 				ExceptionsHandling.ValidaEndereco(novaEnc.getDestinatario().getEndereco());
 				ExceptionsHandling.ValidaEndereco(novaEnc.getRemetente().getEndereco());
+				ExceptionsHandling.ValidaPesoProduto(novaEnc.getPeso());
 			}catch(CPFValidacaoException e) {
 				CrudEncomenda.acaoSucesso = false;
 				return "|*- Erro: "+e.getMessage();
@@ -65,10 +71,13 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 			} catch (EnderecoValidacaoException e) {
 				CrudEncomenda.acaoSucesso = false;
 				return "|*- Erro: "+e.getMessage();
+			} catch(ValidaPesoProdutoException e) {
+				CrudEncomenda.acaoSucesso = false;
+				return "|*- Erro: "+e.getMensagem();
 			}
 			
 			encomendas.add(novaEnc);
-			CrudFuncionario.LogsAcoes.add("Novo Funcionario Inserido: Data->"+this.Data+" | Codigo do novo Funcionario->"+novaEnc.getCodigo()+" | Gerente Responsavel->GR0001");
+			CrudFuncionario.LogsAcoes.add("Nova Encomenda Inserida: Data->"+this.Data+" | Codigo da encomenda->"+novaEnc.getCodigo()+" |");
 			CrudEncomenda.acaoSucesso = true;
 			
 			return "Encomenda Cadastrada com sucesso!";
@@ -84,22 +93,28 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 		if (encomendas.isEmpty()) {
 			return "Sem encomendas cadastradas";
 		} else {
-			String retorno = "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
-			retorno += "Codigo Encomenda | Data de Postagem                         | Remetente 		| Destinatario 		| Tipo de Encomenda | Endereco Entrega ";
-			retorno += "\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+			String retorno = "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+			retorno += "Codigo Encomenda | Data de Postagem             | Remetente 		| Destinatario 		| Tipo de Encomenda | Endereco Entrega                                                                                    |";
+			retorno += "\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
 			for (Encomenda encomenda : encomendas) {
 				if (encomenda instanceof Correspondencia) {
-					retorno += "\n "+encomenda.getCodigo()+" | "+encomenda.getDataPostagem()+" | "+encomenda.getRemetente().getNome()+"	| "+encomenda.getDestinatario().getNome()+" | "+" | Correspondencia | "+encomenda.getDestinatario().getEndereco();
+					retorno += "\n "+encomenda.getCodigo()+"         | "+encomenda.getDataPostagem()+" | "+encomenda.getRemetente().getNome()+"		| "+encomenda.getDestinatario().getNome()+"	 	| "+"Correspondencia   | "+encomenda.getDestinatario().getEndereco();
 				} else if (encomenda instanceof Produto) {
-					retorno += "\n "+encomenda.getCodigo()+" | "+encomenda.getDataPostagem()+" | "+encomenda.getRemetente().getNome()+"	| "+encomenda.getDestinatario().getNome()+" | "+" | Produto | "+encomenda.getDestinatario().getEndereco();				
+					retorno += "\n "+encomenda.getCodigo()+"         | "+encomenda.getDataPostagem()+" | "+encomenda.getRemetente().getNome()+"		| "+encomenda.getDestinatario().getNome()+"	 	| "+"Produto           | "+encomenda.getDestinatario().getEndereco();				
 				} 
 			}
-			retorno += "\n-------------------------------------------------------------------------------------------------------------------------------";
+			retorno += "\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
 			
 			return retorno;
 		}
 	}
 	
+	public static boolean atribuirEntregador(Entregador ent, Encomenda enc) {
+		Entregas entrega = new Entregas(enc);
+		ent.setEntregas(entrega);
+		CrudEncomenda.entregas.add(entrega);
+		return true;
+	}
 	@Override
 	public String updateDados(Encomenda novosDados, String Token) {
 		return null;
@@ -113,7 +128,15 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 
 	@Override
 	public Encomenda selectPorCodigo(String codPesquisa) {
-		// TODO Auto-generated method stub
+		if (encomendas.isEmpty()) {
+			return null;
+		} else {
+			for (Encomenda encomenda : encomendas) {
+				if (encomenda.getCodigo().equals(codPesquisa)) {
+					return encomenda;
+				}
+			}
+		}
 		return null;
 	}
 
