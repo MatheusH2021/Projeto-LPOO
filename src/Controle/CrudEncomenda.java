@@ -122,16 +122,6 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 		return true;
 	}
 
-	@Override
-	public String updateDados(Encomenda novosDados, String Token) {
-		return null;
-	}
-
-	@Override
-	public String deleteDados(String codPesquisa, String Token) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Encomenda selectPorCodigo(String codPesquisa) {
@@ -150,8 +140,25 @@ public class CrudEncomenda implements ICRUD<Encomenda>{
 
 	@Override
 	public String LogsAcoes() {
+		String tabelaLogs = "|*-------------------------------------------------------------------------------------------------------------------------------\n";
+		tabelaLogs += "|*- Lista de logs de ações realizadas no sistema\n";
+		tabelaLogs += "|*-------------------------------------------------------------------------------------------------------------------------------\n";
+		for (String logs : CrudFuncionario.LogsAcoes) {
+			tabelaLogs += "|*- "+logs+"\n";
+		}
+		tabelaLogs += "|*-------------------------------------------------------------------------------------------------------------------------------";
+		return tabelaLogs;
+	}
+
+	@Override
+	public String deleteDados(String codPesquisa, String Token) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public String updateDados(Encomenda novosDados, String Token) {
+		return null;
+	}
+	
 }

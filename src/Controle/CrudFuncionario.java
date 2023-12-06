@@ -8,6 +8,7 @@ import Entidades.Gerente;
 import Exceptions.CPFValidacaoException;
 import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
+import Exceptions.ValidaDeleteEntregadorException;
 import Exceptions.ValidaTokenException;
 
 public class CrudFuncionario implements ICRUD<Funcionario>{
@@ -86,13 +87,23 @@ public class CrudFuncionario implements ICRUD<Funcionario>{
 			return "|*- "+e.getMensagem()+" Não Foi possivel deletar o funcionario!";
 		}
 		for (Funcionario funcionario : funcionarios) {
+			if (funcionario instanceof Entregador) {
+				Entregador ent = (Entregador) funcionario;
+				try {
+					ExceptionsHandling.ValidaDeleteEntregador(ent.getCodFuncionario());
+				}catch(ValidaDeleteEntregadorException e) {
+					return "Erro: "+e.getMensagem();
+				}
+			} else if (funcionario instanceof Gerente) {
+				return "Erro: Não é possivel deletar usuarios do tipo gerente, caso esqueceu sua senha altere na opção 3 do menu.";
+			}
 			if (funcionario.getCodFuncionario().equals(codPesquisa)) {
 				funcionarios.remove(funcionario);
 				LogsAcoes.add("Funcionario Deletado: Data->"+this.Data+" | Codigo do Funcionario Deletado->"+codPesquisa+" | Gerente Responsavel->GR0001");
 				return "|*- Funcionario deletado com sucesso!";
 			}
 		}
-		return "|*- Erro ao deletar Funcionario!";
+		return "|*- Funcionario não encontrado...";
 	}
 
 	@Override

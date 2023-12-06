@@ -7,6 +7,7 @@ import Entidades.Gerente;
 import Exceptions.CPFValidacaoException;
 import Exceptions.EnderecoValidacaoException;
 import Exceptions.ValidaCamposException;
+import Exceptions.ValidaDeleteEntregadorException;
 import Exceptions.ValidaEntregaException;
 import Exceptions.ValidaPesoProdutoException;
 import Exceptions.ValidaTokenException;
@@ -54,9 +55,6 @@ public class ExceptionsHandling {
 				}
 			}
 		}
-		if (token.equals("Att entrega")) {
-			notFound = true;
-		}
 		if (notFound) {
 			throw new ValidaTokenException();
 		}
@@ -93,6 +91,15 @@ public class ExceptionsHandling {
 			}
 		}
 	}
+	
+	public static void ValidaDeleteEntregador(String codEnt) throws ValidaDeleteEntregadorException{
+		for (Entregas entrega : CrudEncomenda.entregas) {
+			if (entrega.getCodEntregador().equals(codEnt) && entrega.getStatus().equals("À caminho do destinatário")) {
+				throw new ValidaDeleteEntregadorException();
+			}
+		}
+	}
+	
 	private static boolean ExisteCPF(String CPF) {
 		for (Funcionario funcionario : CrudFuncionario.funcionarios) {
 			if (funcionario.getCPF().equals(CPF)) {

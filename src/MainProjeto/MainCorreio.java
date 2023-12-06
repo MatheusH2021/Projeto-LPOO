@@ -23,6 +23,7 @@ public class MainCorreio {
 		ICRUD<Funcionario>  crud = new CrudFuncionario();
 		ICRUD<Encomenda> crudEnc = new CrudEncomenda();
 		boolean cont = true;
+		
 		Date data = new Date();
 		Endereco endereco = new Endereco("rua", 1, "bairro", "cidade", "PE", "55294-200");
 		Gerente fun5 = new Gerente("Paula", "33333333333", endereco, "10/10/2001", "123456");
@@ -69,7 +70,7 @@ public class MainCorreio {
 							String nome = keyboard.nextLine();
 							System.out.print("Informe seu CPF (Obs: Apenas numeros!): ");
 							String CPF = keyboard.nextLine();
-							System.out.print("Informe sua data de nascimento: ");
+							System.out.print("Informe sua data de nascimento (Obs: Siga o modelo: dd/mm/AAAA, com as barras): ");
 							String data_nascimento = keyboard.nextLine();
 							System.out.print("Informe sua senha (Obs: no minimo 6 digitos): ");
 							String senhaCad = keyboard.nextLine();
@@ -87,7 +88,7 @@ public class MainCorreio {
 							String cidade = keyboard.nextLine();
 							System.out.print("Informe seu estado (Obs: apenas as iniciais, EX: SP, PE, RJ): ");
 							String estado = keyboard.nextLine().toUpperCase();
-							System.out.print("Informe seu CEP (EX:XXXXX-XXX): ");
+							System.out.print("Informe seu CEP (EX:XXXXX-XXX, Insira o traço junto): ");
 							String cep = keyboard.nextLine();
 							System.out.println();
 							
@@ -141,9 +142,10 @@ public class MainCorreio {
 							System.out.println("|*- [1]- Cadastrar Funcionario        ->                         -|");
 							System.out.println("|*- [2]- Consultar Funcionarios       ->                         -|");
 							System.out.println("|*- [3]- Alterar senha do Funcionario ->                         -|");
-							System.out.println("|*- [4]- Consultar Token de Acesso    ->                         -|");
-							System.out.println("|*- [5]- Logs de Ações do Sistema     ->                         -|");
-							System.out.println("|*- [6]- Encerrar Sessão              ->                         -|");
+							System.out.println("|*- [4]- Deletar Funcionario          ->                         -|");
+							System.out.println("|*- [5]- Consultar Token de Acesso    ->                         -|");
+							System.out.println("|*- [6]- Logs de Ações do Sistema     ->                         -|");
+							System.out.println("|*- [7]- Encerrar Sessão              ->                         -|");
 							System.out.println("|*----------------------------------------------------------------|");
 							System.out.print("|*- Sua Escolha: ");									
 						
@@ -163,7 +165,7 @@ public class MainCorreio {
 												String CPF = keyboard.nextLine();
 												System.out.print("|*- Informe a senha de acesso do funcionario: ");
 												String senhaCad = keyboard.nextLine();
-												System.out.print("|*- Informe a data de nasciment do funcionario: ");
+												System.out.print("|*- Informe a data de nascimento do funcionario (Obs: Siga o modelo: dd/mm/AAAA, com as barras): ");
 												String data_nascimento = keyboard.nextLine();
 												System.out.println("|*-              Segunda etapa: Enderecço                              -|");
 												System.out.print("|*- Informe a rua do Funcionario: ");
@@ -261,16 +263,51 @@ public class MainCorreio {
 										}										
 										break;
 									case 4:
+										keyboard.nextLine();
+										System.out.println("|*- Deletar Funcionario");
+										System.out.println("|*- Será solicitado seu token de acesso, para acessa-lo use a opção [5] do menu!");
+										while(cont_form) {
+											try {
+												System.out.print("Informe o codigo de cadastro do funcionario: ");
+												String codFN = keyboard.nextLine();
+												System.out.println("Confiram exclusão? \n[1]-Sim \n[2]- Não");
+												switch(keyboard.nextInt()) {
+													case 1:
+														keyboard.nextLine();
+														System.out.print("Informe seu token de acesso: ");
+														String token = keyboard.nextLine();
+														System.out.println(crud.deleteDados(codFN, token));
+														cont_form = false;
+														Thread.sleep(2000);
+														break;
+													case 2:
+														System.out.println("Processo encerrado...");
+														cont_form = false;
+														Thread.sleep(2000);
+														break;
+												}
+											}catch(NullPointerException e) {
+												System.out.println(e.getMessage());
+											} catch(IllegalArgumentException e) {
+												System.out.println(e.getMessage());
+											} catch (InputMismatchException e) {
+												System.out.println("Caracter Inválido");
+											} catch (Exception e) {
+												System.out.println("Erro ao Cadastrar: Tente Novamente!");
+											}
+										}
+										break;
+									case 5:
 										System.out.println("|*- Token de Acesso");
 										System.out.println("|*- O token serve para realizar atividades criticas, como deletar um funcionario.");
 										System.out.println("|*- Seu Token: "+atualLogado.getTokenAcesso());
 										Thread.sleep(2000);
 										break;
-									case 5:
+									case 6:
 										System.out.println(crud.LogsAcoes());
 										Thread.sleep(2000);
 										break;
-									case 6:
+									case 7:
 										cont = false;
 										System.out.println("|*- Realiando Logout...!");
 										atualLogado = null;
@@ -322,12 +359,10 @@ public class MainCorreio {
 													switch(keyboard.nextInt()) {
 													case 1:
 														System.out.println(atualLogado.gerenciarEntrega("Entregue", codEntr));
-//														crud.updateDados(atualLogado, "Att entrega");
 														cont_form = false;
 														break;
 													case 2:
 														System.out.println(atualLogado.gerenciarEntrega("Entrega Cancelada", codEntr));
-//														crud.updateDados(atualLogado, "Att entrega");
 														cont_form = false;													
 														break;													
 													}
@@ -339,6 +374,7 @@ public class MainCorreio {
 													break;
 												} catch(Exception e) {
 													System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
+													break;
 												}
 											}catch(IllegalArgumentException e) {
 												System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
@@ -348,6 +384,7 @@ public class MainCorreio {
 												break;
 											} catch(Exception e) {
 												System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
+												break;
 											}
 										}
 										Thread.sleep(2000);
@@ -387,7 +424,9 @@ public class MainCorreio {
 							System.out.println("|*---------------------------------------------------------------*|");
 							System.out.println("|*- Cadastro de encomendas                                      -*|");
 							System.out.println("|*- Atribuição de entregas a entregador                         -*|");
-							System.out.println("|*- Gerenciamento de Encomendas                                 -*|");
+							System.out.println("|*- Visualizar entregadores                                     -*|");
+							System.out.println("|*- Visualizar de Encomendas                                    -*|");
+							System.out.println("|*- Visualizar Lista de Entregas                                -*|");
 							System.out.println("|*---------------------------------------------------------------*|");
 							System.out.println("|*--------------------- Escolha uma opção ------------------------|");
 							System.out.println("|*- [1]- Cadastrar Encomenda             ->                      -|");
@@ -397,9 +436,12 @@ public class MainCorreio {
 							System.out.println("|*- [5]- Visualizar Lista de Entregas    ->                      -|");
 							System.out.println("|*- [6]- Encerrar Sessão                 ->                      -|");
 							System.out.println("|*----------------------------------------------------------------|");
-							System.out.print("|*- Sua Escolha: ");				
+							System.out.println("|*- Pressione enter->");
+							keyboard.nextLine();
+							System.out.print("|*- Sua Escolha: ");
 							try {
-								switch(keyboard.nextInt()) {
+								int opc = keyboard.nextInt(); 
+								switch(opc) {
 									case 1:
 										while(cont_form) {
 											System.out.println("|*--------------------- Cadastro de Encomenda ------------------------|");
@@ -515,12 +557,12 @@ public class MainCorreio {
 															System.out.print("|*- Informe o peso do produto a ser enviado: ");
 															double peso = keyboard.nextDouble();
 															System.out.print("|*- O produto a ser enviado é frágil: \n|*- [1]- sim \n|*- [2]- não \n|*- Sua escolha: ");
-															int opc = keyboard.nextInt();
+															int opc2 = keyboard.nextInt();
 															boolean eFragil;
 															
-															if (opc == 1) {
+															if (opc2 == 1) {
 																eFragil = true;
-															} else if (opc == 2) {
+															} else if (opc2 == 2) {
 																eFragil = false;
 															} else {
 																eFragil = false;
@@ -548,23 +590,38 @@ public class MainCorreio {
 															break;
 													}
 												} catch(IllegalArgumentException e) {
+													cont_form = false;
 													System.out.println(e.getMessage());
 													break;
 												} catch (InputMismatchException e) {
+													cont_form = false;
 													System.out.println("Caracter Inválido");
 													break;
 												} catch (Exception e) {
+													cont_form = false;
 													System.out.println("Erro ao Cadastrar: Tente Novamente!");
 													break;
 												}
 											}catch(NullPointerException e) {
+												cont_form = false;
+												cont = false;
 												System.out.println(e.getMessage());
+												break;
 											} catch(IllegalArgumentException e) {
+												cont_form = false;
+												cont = false;
 												System.out.println(e.getMessage());
+												break;
 											} catch (InputMismatchException e) {
+												cont_form = false;
+												cont = false;
 												System.out.println("Caracter Inválido");
+												break;
 											} catch (Exception e) {
+												cont_form = false;
+												cont = false;
 												System.out.println("Erro ao Cadastrar: Tente Novamente!");
+												break;
 											}
 										}
 										break;
@@ -604,10 +661,13 @@ public class MainCorreio {
 												}
 											} catch(IllegalArgumentException e) {
 												System.out.println(e.getMessage());
+												break;
 											} catch (InputMismatchException e) {
 												System.out.println("Caracter Inválido");
+												break;
 											} catch (Exception e) {
 												System.out.println("Erro ao Cadastrar: Tente Novamente!");
+												break;
 											}
 										}
 										Thread.sleep(2000);
@@ -653,6 +713,7 @@ public class MainCorreio {
 								break;
 							} catch(Exception e) {
 								System.out.println("|*- Caracter Inválido, digite apenas números! Sessão Encerrada.");
+								break;
 							}
 							
 						}
